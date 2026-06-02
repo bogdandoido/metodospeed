@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Método SPEED — Validação Estratégica de Criativos</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif;background:#000;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{overflow-x:hidden}
+
+@keyframes wordReveal{from{opacity:0;transform:translateY(110%)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scrollBounce{0%,100%{transform:scaleY(1);opacity:.35}50%{transform:scaleY(.55);opacity:1}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes pulseRing{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.12)}50%{box-shadow:0 0 0 14px rgba(255,255,255,0)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes frameSlide{from{opacity:0;transform:translateX(-48px)}to{opacity:1;transform:translateX(0)}}
+
+/* REVEAL */
+.rev{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.19,1,.22,1),transform .9s cubic-bezier(.19,1,.22,1)}
+.rev.in{opacity:1;transform:translateY(0)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:56px;transition:all .45s ease}
+nav.stuck{background:rgba(0,0,0,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:.5px solid rgba(255,255,255,.07)}
+.nav-logo{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none}
+.nav-cta{font-size:13px;font-weight:600;background:#fff;color:#000;padding:9px 22px;border-radius:100px;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-cta:active{transform:scale(.96)}
+
+/* HERO */
+#hero{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:28px 20px 20px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% -10%,#191919 0%,#000 55%)}
+.hero-dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:34px 34px;mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 70%)}
+.hero-overline{font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:28px;display:flex;align-items:center;gap:12px;animation:fadeIn .8s ease .1s both}
+.hero-logo{height:54px;width:auto;opacity:1;filter:brightness(0) invert(1);display:block}
+.hero-overline::before,.hero-overline::after{content:'';flex:1;max-width:36px;height:.5px;background:rgba(255,255,255,.2)}
+.hero-h1{font-size:clamp(52px,13vw,118px);font-weight:900;line-height:.94;letter-spacing:-.042em;color:#fff;margin-bottom:20px}
+.ww{display:inline-block;overflow:hidden;vertical-align:bottom}
+.wi{display:inline-block;opacity:0;transform:translateY(110%);animation:wordReveal .85s cubic-bezier(.19,1,.22,1) both}
+.hero-sub{font-size:clamp(16px,3.5vw,22px);font-weight:300;color:rgba(255,255,255,.36);margin-bottom:44px;max-width:440px;animation:fadeUp .8s cubic-bezier(.19,1,.22,1) .85s both;line-height:1.5}
+.vsl-wrap{width:100%;max-width:780px;margin-bottom:36px;animation:fadeUp 1s cubic-bezier(.19,1,.22,1) 1.05s both}
+.vsl-box{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;cursor:pointer;background:#090909;border:.5px solid rgba(255,255,255,.08);box-shadow:0 0 0 .5px rgba(255,255,255,.03),0 40px 90px rgba(0,0,0,.9),inset 0 0 50px rgba(255,255,255,.015)}
+.vsl-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.04) 0%,transparent 55%)}
+.vsl-scan{position:absolute;inset:0;pointer-events:none;opacity:.02;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,1) 2px,rgba(255,255,255,1) 3px)}
+.vsl-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.vsl-btn{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);border:.5px solid rgba(255,255,255,.18);backdrop-filter:blur(12px);transition:all .3s cubic-bezier(.19,1,.22,1);animation:pulseRing 3s ease infinite}
+.vsl-box:hover .vsl-btn{transform:scale(1.12);background:rgba(255,255,255,.15)}
+.vsl-tri{width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent #fff;margin-left:3px}
+.vsl-hint{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28)}
+.vsl-rec{position:absolute;top:14px;left:14px;font-size:9px;color:rgba(255,255,255,.18)}
+.vsl-time{position:absolute;top:14px;right:14px;font-size:9px;color:rgba(255,255,255,.18)}
+.vsl-bar{position:absolute;bottom:14px;left:12%;right:12%;height:1px;background:rgba(255,255,255,.05);border-radius:1px}
+.hero-proof{display:flex;align-items:center;gap:0;font-size:12px;color:rgba(255,255,255,.28);animation:fadeIn .8s ease 1.5s both;border:.5px solid rgba(255,255,255,.08);border-radius:100px;padding:10px 20px;gap:16px}
+.psep{width:.5px;height:12px;background:rgba(255,255,255,.1)}
+.ps{color:rgba(255,255,255,.65);font-weight:600}
+.scroll-ind{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;animation:fadeIn 1s ease 2.1s both}
+.scroll-lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.18)}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,rgba(255,255,255,.28),transparent);animation:scrollBounce 2.5s ease infinite}
+
+/* DIVIDERS */
+.divider{height:.5px;background:rgba(255,255,255,.06);width:100%}
+
+/* SECTIONS */
+.sec{
+  padding:72px 20px;
+  position:relative;
+  background-color:#0c0c0c;
+  background-image:
+    radial-gradient(ellipse at 50% 28%,transparent 0%,rgba(0,0,0,.75) 68%),
+    repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(255,255,255,.032) 31px,rgba(255,255,255,.032) 32px);
+}
+/* ── BREATHING AURA por seção ─────────────────────────────────── */
+@keyframes auraBreath{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes auraBreath2{0%,100%{opacity:.35}50%{opacity:.85}}
+
+#ciclo::after{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:100%;height:320px;background:radial-gradient(ellipse at 50% 20%,rgba(255,255,255,.07) 0%,rgba(180,180,180,.02) 45%,transparent 72%);pointer-events:none;z-index:0;animation:auraBreath 6s ease-in-out infinite}
+
+#meta-section::after{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:100%;height:320px;background:radial-gradient(ellipse at 50% 20%,rgba(255,255,255,.06) 0%,rgba(160,160,160,.02) 45%,transparent 72%);pointer-events:none;z-index:0;animation:auraBreath2 7s ease-in-out infinite;animation-delay:-2s}
+
+#speed-section::after{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:100%;height:300px;background:radial-gradient(ellipse at 50% 20%,rgba(255,255,255,.05) 0%,rgba(150,150,150,.02) 45%,transparent 70%);pointer-events:none;z-index:0;animation:auraBreath 8s ease-in-out infinite;animation-delay:-3s}
+
+#output-section::after{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:100%;height:280px;background:radial-gradient(ellipse at 50% 20%,rgba(255,255,255,.06) 0%,rgba(160,160,160,.02) 42%,transparent 70%);pointer-events:none;z-index:0;animation:auraBreath2 6.5s ease-in-out infinite;animation-delay:-1s}
+
+#test-section::after{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:100%;height:280px;background:radial-gradient(ellipse at 50% 20%,rgba(255,255,255,.06) 0%,rgba(150,150,150,.02) 42%,transparent 70%);pointer-events:none;z-index:0;animation:auraBreath 7.5s ease-in-out infinite;animation-delay:-4s}
+
+#oferta::after{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:100%;height:280px;background:radial-gradient(ellipse at 50% 20%,rgba(255,255,255,.07) 0%,rgba(180,180,180,.02) 45%,transparent 70%);pointer-events:none;z-index:0;animation:auraBreath2 5.5s ease-in-out infinite;animation-delay:-2s}
+/* ── White sections — limpo, sem linhas ─ */
+.sec-white{
+  background-color:#f5f5f5 !important;
+  background-image:none !important;
+}
+.sec-white::before{display:none !important}
+.sec-inner{max-width:1080px;margin:0 auto}
+.sec-inner-md{max-width:860px;margin:0 auto}
+.sec-lbl{font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:14px}
+.sec-ttl{font-size:clamp(32px,6vw,64px);font-weight:700;line-height:1.07;letter-spacing:-.028em}
+.dim{color:rgba(255,255,255,.28)}
+
+/* CYCLE */
+.cycle-wrap{position:relative;margin-top:56px}
+.cycle-vline{position:absolute;left:19px;top:36px;bottom:36px;width:1px;background:rgba(255,255,255,.05);overflow:hidden}
+.cycle-fill{width:100%;height:0%;background:linear-gradient(to bottom,rgba(255,255,255,.3),rgba(255,255,255,.03));transition:height 2.2s cubic-bezier(.19,1,.22,1)}
+.cycle-step{display:flex;gap:24px;padding-bottom:40px;position:relative}
+.cycle-num{width:38px;height:38px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:.05em;border:.5px solid rgba(255,255,255,.1);background:#000;position:relative;z-index:1}
+.cycle-body{padding-top:6px}
+.cycle-body h3{font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.3}
+.cycle-body p{font-size:13px;color:rgba(255,255,255,.33);line-height:1.65}
+.cycle-warn{margin-top:32px;padding-top:20px;border-top:.5px solid rgba(255,255,255,.08)}
+.cycle-warn-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.cycle-warn-eq{font-size:11px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.25);text-transform:uppercase}
+.cycle-warn-res{font-size:14px;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:-.01em}
+.cycle-warn-sub{margin-top:6px;font-size:11px;color:rgba(255,255,255,.18);letter-spacing:.06em;text-transform:uppercase}
+
+/* BIG IDEA — white section with frame deco */
+#big-idea{padding:80px 20px;text-align:center;background:#f5f5f5;color:#000;position:relative;overflow:hidden}
+
+.bi-lbl{font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.3);margin-bottom:24px}
+.bi-main{font-size:clamp(28px,6vw,66px);font-weight:700;line-height:1.1;letter-spacing:-.028em;max-width:860px;margin:0 auto 10px;color:#000}
+.bi-word{display:inline-block;margin-right:.22em;opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.19,1,.22,1),transform .55s cubic-bezier(.19,1,.22,1)}
+.bi-word.in{opacity:1;transform:translateY(0)}
+.bi-div{width:1px;height:52px;background:rgba(0,0,0,.1);margin:36px auto}
+.bi-sub{font-size:clamp(16px,2.8vw,28px);font-weight:400;color:rgba(0,0,0,.38);max-width:580px;margin:0 auto;line-height:1.45;opacity:0;transform:translateY(12px);transition:opacity .7s cubic-bezier(.19,1,.22,1) .45s,transform .7s cubic-bezier(.19,1,.22,1) .45s}
+.bi-sub.in{opacity:1;transform:translateY(0)}
+
+/* META GRID */
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.06);border-radius:20px;overflow:hidden;margin-top:36px}
+.meta-card{background:#000;padding:36px 32px;transition:background .25s ease}
+.meta-card:active{background:#0a0a0a}
+.meta-n{font-size:10px;font-weight:700;letter-spacing:.14em;color:rgba(255,255,255,.2);margin-bottom:14px}
+.meta-card h3{font-size:17px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.3}
+.meta-card p{font-size:13px;color:rgba(255,255,255,.3);line-height:1.6;font-style:italic}
+
+/* SPEED */
+.speed-section{height:520vh;position:relative}
+.speed-sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:40% 60%}
+.speed-left{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;border-right:.5px solid rgba(255,255,255,.05)}
+.speed-ghost{position:absolute;font-size:44vw;font-weight:900;color:rgba(255,255,255,.022);line-height:1;user-select:none;pointer-events:none;transition:all .55s cubic-bezier(.19,1,.22,1)}
+.speed-main-letter{font-size:clamp(90px,18vw,240px);font-weight:900;letter-spacing:-.04em;line-height:1;color:#fff;position:relative;z-index:1}
+.speed-dots{position:absolute;bottom:28px;left:0;right:0;display:flex;justify-content:center;gap:7px}
+.speed-dot{height:2px;border-radius:2px;background:rgba(255,255,255,.12);transition:all .38s cubic-bezier(.19,1,.22,1)}
+.speed-dot.on{background:rgba(255,255,255,.65);width:26px!important}
+.speed-right{display:flex;flex-direction:column;justify-content:center;padding:60px 52px;overflow:hidden;position:relative}
+.sp-content{animation:fadeUp .4s cubic-bezier(.19,1,.22,1) both}
+.sp-sub{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:12px}
+.sp-name{font-size:clamp(36px,5vw,60px);font-weight:700;letter-spacing:-.03em;color:#fff;margin-bottom:10px;line-height:1.05}
+.sp-def{font-size:15px;color:rgba(255,255,255,.4);line-height:1.62;max-width:380px;margin-bottom:30px}
+.sp-items{display:flex;flex-direction:column;gap:8px}
+.sp-item{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:10px;font-size:13px;color:rgba(255,255,255,.46);background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.06);line-height:1.45}
+.sp-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0;margin-top:6px}
+.sp-err{margin-top:12px;padding:9px 13px;border-radius:9px;font-size:11px;color:rgba(255,255,255,.2);font-style:italic;background:rgba(255,255,255,.015);border:.5px solid rgba(255,255,255,.04)}
+
+/* DIAG */
+.diag-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.06);border-radius:20px;overflow:hidden;margin-top:36px}
+.diag-card{background:#000;padding:34px 28px;transition:background .25s ease}
+.diag-card:active{background:#070707}
+.diag-n{font-size:10px;font-weight:700;letter-spacing:.14em;color:rgba(255,255,255,.18);text-transform:uppercase;margin-bottom:12px}
+.diag-card h3{font-size:19px;font-weight:600;color:#fff;margin-bottom:18px;line-height:1.25}
+.diag-r{margin-bottom:12px}
+.diag-rl{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:3px}
+.diag-rv{font-size:13px;color:rgba(255,255,255,.42);line-height:1.55}
+.knights{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:20px}
+.knight-lbl{font-size:12px;color:rgba(255,255,255,.26);margin-right:4px}
+.knight{font-size:12px;font-weight:600;letter-spacing:.06em;padding:6px 16px;border-radius:100px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.52)}
+
+/* OUTPUT */
+.out-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+.out-card{border-radius:20px;padding:30px 24px;border:.5px solid}
+.out-icon{font-size:20px;margin-bottom:16px;color:rgba(255,255,255,.32)}
+.out-ttl{font-size:20px;font-weight:600;color:#fff;margin-bottom:4px}
+.out-tag{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:20px}
+.out-items{display:flex;flex-direction:column;gap:9px}
+.out-item{display:flex;align-items:center;gap:9px;font-size:13px;color:rgba(255,255,255,.42)}
+.out-mk{font-size:11px;color:rgba(255,255,255,.2);width:13px;flex-shrink:0}
+.out-extra{margin-top:18px;padding-top:16px;border-top:.5px solid rgba(255,255,255,.07);font-size:11px;color:rgba(255,255,255,.22);line-height:1.6}
+
+/* MARQUEE */
+.mq-wrap{padding:24px 0;overflow:hidden;border-top:.5px solid rgba(255,255,255,.05);border-bottom:.5px solid rgba(255,255,255,.05)}
+.mq-track{display:flex;animation:marquee 20s linear infinite;width:max-content}
+.mq-item{display:inline-flex;align-items:center;gap:18px;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.18);padding:0 22px;flex-shrink:0}
+.mq-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.14)}
+
+/* TESTIMONIALS */
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+.test-card{background:#070707;border:.5px solid rgba(255,255,255,.07);border-radius:20px;padding:28px;display:flex;flex-direction:column;justify-content:space-between}
+.test-qm{font-size:32px;color:rgba(255,255,255,.1);font-family:Georgia,serif;line-height:.9;margin-bottom:10px}
+.test-q{font-size:13px;color:rgba(255,255,255,.46);line-height:1.78;flex:1}
+.test-author{display:flex;align-items:center;gap:11px;margin-top:20px;padding-top:16px;border-top:.5px solid rgba(255,255,255,.06)}
+.test-av{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.48);background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1)}
+.test-name{font-size:13px;font-weight:500;color:rgba(255,255,255,.62)}
+.test-role{font-size:11px;color:rgba(255,255,255,.26);margin-top:1px}
+
+/* OFFER */
+.offer-card{background:#080808;border:.5px solid rgba(255,255,255,.09);border-radius:24px;padding:40px 28px;margin-top:36px}
+.mod-list{background:rgba(255,255,255,.02);border:.5px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;margin-bottom:32px}
+.mod-row{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:.5px solid rgba(255,255,255,.05);transition:background .2s}
+.mod-row:last-child{border-bottom:none}
+.mod-row:active{background:rgba(255,255,255,.025)}
+.mod-key{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:rgba(255,255,255,.38);background:rgba(255,255,255,.06)}
+.mod-name{flex:1;font-size:14px;color:rgba(255,255,255,.58);font-weight:500}
+.mod-tag{font-size:10px;padding:3px 11px;border-radius:100px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.07);color:rgba(255,255,255,.26);white-space:nowrap}
+.mod-tag.b{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.14);color:rgba(255,255,255,.52)}
+.price-blk{text-align:center;margin-bottom:32px}
+.price-from{font-size:13px;color:rgba(255,255,255,.22);text-decoration:line-through;margin-bottom:4px}
+.price-val{font-size:72px;font-weight:900;line-height:1;letter-spacing:-.04em;background:linear-gradient(90deg,#fff 0%,#aaa 40%,#fff 60%,#aaa 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+.price-pfx{font-size:22px;font-weight:600;vertical-align:top;margin-top:8px;display:inline-block}
+.price-note{font-size:12px;color:rgba(255,255,255,.22);margin-top:8px}
+.btn-main{display:block;width:100%;text-align:center;font-size:16px;font-weight:700;background:#fff;color:#000;padding:17px 24px;border-radius:14px;text-decoration:none;transition:all .2s cubic-bezier(.19,1,.22,1)}
+.btn-main:active{transform:scale(.97)}
+.offer-note{text-align:center;font-size:11px;color:rgba(255,255,255,.18);margin-top:12px}
+
+/* GUARANTEE */
+.guar-wrap{text-align:center;padding:0 20px 64px;max-width:480px;margin:0 auto}
+.guar-badge{margin:0 auto 14px;display:flex;align-items:center;justify-content:center;position:relative}
+.guar-ring{animation:ringRotate 8s linear infinite;transform-origin:center}
+@keyframes ringRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.guar-unit{font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:24px}
+.guar-statement{font-size:clamp(22px,6vw,30px);font-weight:800;color:#fff;line-height:1.15;letter-spacing:-.025em;margin-bottom:10px}
+.guar-statement span{color:rgba(255,255,255,.35)}
+.guar-accord{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:16px}
+.guar-steps{list-style:none;margin:0 auto 24px;max-width:340px;display:flex;flex-direction:column;gap:10px;text-align:left}
+.guar-step{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.38);line-height:1.5}
+.guar-step::before{content:'';width:5px;height:5px;border-radius:50%;border:.5px solid rgba(255,255,255,.3);flex-shrink:0;margin-top:6px}
+.guar-final{font-size:12px;font-weight:600;color:rgba(255,255,255,.28);letter-spacing:.04em}
+
+/* FINAL CTA — white section with frame deco */
+#final-cta{padding:100px 20px;text-align:center;background:#f5f5f5;color:#000;position:relative;overflow:hidden}
+.fcta-bg-word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(120px,28vw,260px);font-weight:900;letter-spacing:-.05em;color:rgba(0,0,0,.04);pointer-events:none;user-select:none;white-space:nowrap;line-height:1}
+.fcta-lbl{font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.3);margin-bottom:20px}
+.fcta-ttl{font-size:clamp(32px,7vw,72px);font-weight:900;line-height:.95;letter-spacing:-.036em;margin-bottom:16px;background:linear-gradient(180deg,#000 0%,#3a3a3a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fcta-before-after{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px;font-size:12px;font-weight:600;letter-spacing:.04em}
+.fcta-ba-item{color:rgba(0,0,0,.32)}
+.fcta-ba-item.after{color:#000}
+.fcta-ba-sep{width:20px;height:1px;background:rgba(0,0,0,.2)}
+.fcta-sub{font-size:clamp(14px,2.5vw,17px);color:rgba(0,0,0,.38);margin-bottom:12px;max-width:380px;margin-left:auto;margin-right:auto;line-height:1.6}
+.fcta-social{font-size:11px;color:rgba(0,0,0,.3);margin-bottom:28px;letter-spacing:.02em}
+.fcta-social strong{color:rgba(0,0,0,.6);font-weight:600}
+.fcta-anchor{font-size:12px;color:rgba(0,0,0,.3);margin-bottom:10px;letter-spacing:.01em}
+.fcta-anchor s{color:rgba(0,0,0,.22)}
+.fcta-anchor strong{color:#000;font-size:15px;font-weight:700}
+.btn-dark{display:inline-flex;align-items:center;gap:8px;background:#000;color:#fff;font-size:16px;font-weight:700;padding:17px 42px;border-radius:100px;text-decoration:none;transition:all .25s cubic-bezier(.19,1,.22,1);position:relative}
+.btn-dark::after{content:'';position:absolute;inset:-3px;border-radius:100px;border:1.5px solid rgba(0,0,0,.15);animation:btnPulse 2.4s ease-in-out infinite;pointer-events:none}
+@keyframes btnPulse{0%,100%{opacity:0;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+.btn-dark:active{transform:scale(.97)}
+.fcta-trust{margin-top:16px;font-size:11px;color:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.fcta-trust-dot{width:2px;height:2px;border-radius:50%;background:rgba(0,0,0,.2)}
+.fcta-logo{height:45px;width:auto;margin-top:28px;opacity:1;display:block;margin-left:auto;margin-right:auto}
+
+/* FOOTER */
+footer{padding:48px 24px 36px;border-top:.5px solid rgba(255,255,255,.07);background:#000}
+.foot-top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:36px}
+.foot-brand img{height:32px;width:auto;opacity:.55;filter:brightness(0) invert(1);margin-bottom:10px}
+.foot-tagline{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.04em;line-height:1.5}
+.foot-links{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.foot-link{font-size:11px;color:rgba(255,255,255,.22);text-decoration:none;letter-spacing:.02em;transition:color .2s}
+.foot-link:hover{color:rgba(255,255,255,.5)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:.5px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:8px}
+.foot-copy{font-size:10px;color:rgba(255,255,255,.14);letter-spacing:.04em}
+.foot-cnpj{font-size:10px;color:rgba(255,255,255,.1);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.foot-dev{font-size:10px;color:rgba(255,255,255,.12);letter-spacing:.02em;margin-top:4px}
+.foot-dev strong{color:rgba(255,255,255,.22);font-weight:500}
+
+
+/* DIAG WHITE SECTION */
+.sec-white{background:#fff;color:#000}
+.sec-white .sec-lbl{color:rgba(0,0,0,.26)}
+.sec-white .sec-ttl{color:#000}
+.sec-white .dim{color:rgba(0,0,0,.3)}
+.sec-white .rev{opacity:0;transform:translateY(24px)}
+.sec-white .rev.in{opacity:1;transform:translateY(0)}
+.sec-white .knights{margin-top:20px}
+.sec-white .knight-lbl{color:rgba(0,0,0,.32)}
+.sec-white .knight{background:rgba(0,0,0,.05);border:.5px solid rgba(0,0,0,.11);color:rgba(0,0,0,.62)}
+
+/* CAROUSEL */
+.car-wrap{position:relative;margin-top:36px}
+.car-track-outer{overflow:hidden;border-radius:20px;max-width:720px;margin:0 auto}
+.car-track{display:flex;transition:transform .55s cubic-bezier(.19,1,.22,1)}
+.car-track .diag-card{flex:0 0 100%;min-width:100%;border-radius:0;cursor:default}
+.car-controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:22px}
+.car-btn{width:44px;height:44px;border-radius:50%;border:.5px solid rgba(0,0,0,.14);background:#fff;color:#000;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .22s cubic-bezier(.19,1,.22,1);box-shadow:0 1px 8px rgba(0,0,0,.07);line-height:1;outline:none;-webkit-tap-highlight-color:transparent}
+.car-btn:hover{background:#000;color:#fff;border-color:#000;transform:scale(1.07)}
+.car-btn:active{transform:scale(.92)}
+.car-dots{display:flex;gap:7px;align-items:center}
+.car-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.15);transition:all .32s cubic-bezier(.19,1,.22,1);cursor:pointer}
+.car-dot.on{background:#000;width:22px;border-radius:3px}
+@media(max-width:640px){.car-track-outer{border-radius:14px}.car-track .diag-card{padding:26px 20px}.car-btn{width:40px;height:40px;font-size:16px}}
+
+/* DECK */
+.deck-wrap{margin-top:28px;text-align:center}
+.deck{position:relative;max-width:540px;height:295px;margin:0 auto 30px;-webkit-tap-highlight-color:transparent}
+.deck-card{position:absolute;top:0;left:0;right:0;border-radius:20px;will-change:transform,opacity}
+.deck-btn{display:inline-flex;align-items:center;gap:9px;background:transparent;color:rgba(255,255,255,.48);font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;border:.5px solid rgba(255,255,255,.12);border-radius:100px;padding:11px 26px;cursor:pointer;outline:none;transition:background .22s,color .22s,border-color .22s;-webkit-tap-highlight-color:transparent}
+.deck-btn:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);border-color:rgba(255,255,255,.22)}
+.deck-btn:active{transform:scale(.95)}
+.deck-btn-ico{font-size:16px;transition:transform .3s}
+.deck-btn:hover .deck-btn-ico{transform:translateX(4px)}
+@media(max-width:640px){.deck{height:290px;max-width:100%}.deck-btn{font-size:11px;padding:10px 22px}}
+
+/* READ PROGRESS */
+#rp{position:fixed;top:0;left:0;height:2px;width:0%;z-index:201;pointer-events:none;background:#fff;mix-blend-mode:difference;transition:width .07s linear}
+
+/* STICKY CTA — mobile only */
+#sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:89;padding:14px 18px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(0,0,0,.97) 0%,rgba(0,0,0,.7) 60%,transparent 100%);transform:translateY(120%);transition:transform .55s cubic-bezier(.19,1,.22,1);pointer-events:none}
+#sticky-cta.vis{transform:translateY(0);pointer-events:auto}
+#sticky-cta a{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:#fff;color:#000;font-size:15px;font-weight:700;padding:16px 24px;border-radius:14px;text-decoration:none;letter-spacing:-.015em}
+#sticky-cta a span{font-size:18px;line-height:1}
+@media(max-width:640px){#sticky-cta{display:block}}
+
+/* SWIPE HINT */
+.sh-wrap{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;opacity:1;transition:opacity .7s ease}
+.sh-wrap.gone{opacity:0;pointer-events:none}
+.sh-txt{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.2)}
+.sh-l,.sh-r{font-size:13px;color:rgba(255,255,255,.2)}
+.sh-l{animation:shL 1.8s ease-in-out infinite}
+.sh-r{animation:shR 1.8s ease-in-out infinite}
+@keyframes shL{0%,100%{transform:translateX(0);opacity:.2}50%{transform:translateX(-5px);opacity:.55}}
+@keyframes shR{0%,100%{transform:translateX(0);opacity:.2}50%{transform:translateX(5px);opacity:.55}}
+
+/* CAROUSEL swipe hint */
+.car-hint{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;opacity:1;transition:opacity .7s ease}
+.car-hint.gone{opacity:0;pointer-events:none}
+.car-hint-txt{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.22)}
+.car-hint-arr{font-size:13px;color:rgba(0,0,0,.22)}
+.car-hint-arr.l{animation:shL 1.8s ease-in-out infinite}
+.car-hint-arr.r{animation:shR 1.8s ease-in-out infinite}
+
+
+/* SPEED MOBILE — horizontal snap */
+.speed-mobile{display:none;background:#000;border-top:.5px solid rgba(255,255,255,.05)}
+.speed-mobile-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:20px 20px 0;gap:12px}
+.speed-mobile-track::-webkit-scrollbar{display:none}
+.speed-slide{flex:0 0 calc(100vw - 56px);min-height:75svh;scroll-snap-align:start;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;padding:36px 20px 28px;border-radius:20px;border:.5px solid rgba(255,255,255,.08);background:#0a0a0a}
+.speed-slide-ghost{position:absolute;font-size:60vw;font-weight:900;color:rgba(255,255,255,.04);right:-6vw;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none;user-select:none}
+.speed-slide-step{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:18px}
+.speed-slide-letter{font-size:clamp(80px,22vw,110px);font-weight:900;line-height:.9;letter-spacing:-.04em;color:#fff;margin-bottom:10px}
+.speed-slide-name{font-size:26px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:-.02em}
+.speed-slide-def{font-size:14px;color:rgba(255,255,255,.4);line-height:1.62;margin-bottom:20px}
+.speed-slide-items{display:flex;flex-direction:column;gap:7px}
+.speed-slide-item{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;border-radius:10px;font-size:12px;color:rgba(255,255,255,.46);background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.06);line-height:1.45}
+.speed-slide-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0;margin-top:5px}
+.speed-slide-err{margin-top:10px;padding:8px 12px;border-radius:9px;font-size:11px;color:rgba(255,255,255,.2);font-style:italic;background:rgba(255,255,255,.015);border:.5px solid rgba(255,255,255,.04)}
+.speed-mobile-footer{display:flex;align-items:center;justify-content:space-between;padding:16px 22px 20px;border-top:.5px solid rgba(255,255,255,.05)}
+.speed-mobile-nav{display:flex;gap:7px;align-items:center}
+.speed-mobile-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .35s cubic-bezier(.19,1,.22,1)}
+.speed-mobile-dot.on{background:#fff;width:22px;border-radius:3px}
+.speed-mobile-count{font-size:11px;font-weight:600;color:rgba(255,255,255,.22);letter-spacing:.08em}
+.speed-swipe-hint{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.2);transition:opacity .6s ease}
+.speed-swipe-hint.gone{opacity:0;pointer-events:none}
+@media(max-width:640px){
+  .speed-section{display:none}
+  .speed-mobile{display:block}
+}
+
+
+/* ── GRAIN NOISE OVERLAY ─────────────────────────────────────────────── */
+body::after{content:'';position:fixed;top:-50%;left:-50%;right:-50%;bottom:-50%;z-index:998;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;opacity:.028;animation:grainAnim .65s steps(1) infinite}
+@keyframes grainAnim{0%{background-position:0 0}10%{background-position:-5% -10%}20%{background-position:-15% 5%}30%{background-position:7% -25%}40%{background-position:-5% 25%}50%{background-position:-15% 10%}60%{background-position:15% 0%}70%{background-position:0% 15%}80%{background-position:3% 35%}90%{background-position:-10% 10%}100%{background-position:0 0}}
+
+/* ── HERO HEADLINE GLOW ──────────────────────────────────────────────── */
+@keyframes heroLineGlow{
+  0%,100%{filter:drop-shadow(0 0 6px rgba(255,255,255,.28)) drop-shadow(0 0 18px rgba(255,255,255,.08))}
+  50%{filter:drop-shadow(0 0 14px rgba(255,255,255,.72)) drop-shadow(0 0 32px rgba(255,255,255,.28)) drop-shadow(0 0 64px rgba(255,255,255,.12))}
+}
+.hero-glow-line{animation:heroLineGlow 4s ease-in-out infinite;animation-delay:1.2s}
+
+/* ── HERO AMBIENT GLOW ───────────────────────────────────────────────── */
+.hero-glow{position:absolute;top:38%;left:50%;transform:translateX(-50%);width:380px;height:280px;background:radial-gradient(ellipse at center,rgba(255,255,255,.07) 0%,transparent 65%);border-radius:50%;pointer-events:none;animation:heroPulse 5s ease-in-out infinite;z-index:0}
+@keyframes heroPulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.7}50%{transform:translateX(-50%) scale(1.18);opacity:1}}
+#hero{position:relative}
+#hero > *:not(.hero-glow):not(.hero-dots){position:relative;z-index:1}
+.hero-glow{position:absolute !important}
+.hero-dots{position:absolute !important;z-index:0}
+
+/* ── TEXT ILLUMINATION ────────────────────────────────────────────────── */
+.bi-word{color:rgba(0,0,0,.1);transition:color .4s ease;opacity:1 !important;transform:none !important}
+.bi-word.lit{color:#000}
+#bi-sub{opacity:0;transform:translateY(10px);transition:opacity .7s ease,transform .7s ease}
+#bi-sub.lit{opacity:1;transform:translateY(0)}
+
+/* ── META FOCUS FADE ──────────────────────────────────────────────────── */
+.meta-card{transition:opacity .38s ease,transform .38s ease,background .25s ease}
+.meta-card.dim{opacity:.22;transform:scale(.97)}
+
+/* ── BORDER DRAW SVG ─────────────────────────────────────────────────── */
+.out-card{position:relative}
+.bdraw-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;border-radius:inherit}
+.bdraw-rect{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1;transition:stroke-dashoffset 1.4s cubic-bezier(.19,1,.22,1)}
+
+/* ── SECTION COUNTER ─────────────────────────────────────────────────── */
+#sec-counter{position:fixed;bottom:28px;left:20px;z-index:88;font-size:10px;font-weight:700;letter-spacing:.14em;color:rgba(255,255,255,.28);opacity:0;transition:opacity .5s ease;pointer-events:none;font-variant-numeric:tabular-nums}
+#sec-counter.vis{opacity:1}
+#sec-counter.inv{color:rgba(0,0,0,.28)}
+
+/* ── STAT BARS in hero proof ─────────────────────────────────────────── */
+.hero-proof{flex-direction:row;padding:10px 20px;gap:0;align-items:center}
+.hp-item{display:flex;flex-direction:column;align-items:center;gap:1px;flex:1}
+.hp-val{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);white-space:nowrap}
+.hp-lbl{font-size:9px;color:rgba(255,255,255,.26);letter-spacing:.04em}
+.hp-bar-wrap{width:36px;height:1.5px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:5px;overflow:hidden}
+.hp-bar{height:100%;background:rgba(255,255,255,.5);border-radius:2px;width:0%;transition:width 1.8s cubic-bezier(.19,1,.22,1)}
+.hp-sep{width:.5px;height:28px;background:rgba(255,255,255,.1);flex-shrink:0;margin:0 14px}
+.hp-unit{font-size:9px;color:rgba(255,255,255,.32);font-weight:400}
+
+/* ── FAN-OUT hint ────────────────────────────────────────────────────── */
+/* no extra CSS needed — handled via inline style in JS */
+
+@media(max-width:640px){
+  #sec-counter{display:none}
+  .hp-bar-wrap{width:28px}
+  .hp-sep{margin:0 10px}
+}
+
+/* ─── MOBILE ─── */
+@media(max-width:640px){
+  nav{padding:0 18px;height:52px}
+  #hero{padding:28px 16px 20px}
+  .hero-overline{font-size:9px;letter-spacing:.18em}
+  .hero-logo{height:45px}
+  .hero-overline::before,.hero-overline::after{max-width:24px}
+  .hero-h1{font-size:clamp(46px,14vw,72px);letter-spacing:-.036em}
+  .hero-sub{font-size:15px;margin-bottom:32px}
+  .vsl-wrap{margin-bottom:28px}
+  .vsl-box{border-radius:12px}
+  .vsl-btn{width:58px;height:58px}
+  .hero-proof{font-size:11px;padding:9px 12px;gap:8px;flex-wrap:nowrap}
+  .hp-sep{margin:0 6px !important}
+  .psep{display:none}
+  .hero-proof span:nth-child(3){display:none}
+
+  .sec{padding:48px 16px}
+  .sec-ttl{font-size:clamp(28px,8vw,42px);letter-spacing:-.022em}
+
+  .cycle-wrap{margin-top:40px}
+  .cycle-step{gap:18px;padding-bottom:32px}
+  .cycle-body h3{font-size:15px}
+  .cycle-body p{font-size:12px}
+
+  #big-idea{padding:56px 16px}
+  .bi-main{font-size:clamp(26px,7vw,40px)}
+  .bi-sub{font-size:clamp(14px,4vw,18px)}
+  .meta-grid{grid-template-columns:1fr}
+  .meta-card{padding:28px 22px}
+
+  /* SPEED mobile: full width, letter on top */
+  .speed-section{height:480vh}
+  .speed-sticky{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .speed-left{height:140px;border-right:none;border-bottom:.5px solid rgba(255,255,255,.05)}
+  .speed-ghost{font-size:32vw}
+  .speed-main-letter{font-size:clamp(72px,20vw,110px)}
+  .speed-dots{bottom:10px}
+  .speed-right{padding:28px 18px;justify-content:flex-start;overflow-y:auto}
+  .sp-name{font-size:clamp(28px,8vw,40px)}
+  .sp-def{font-size:13px;max-width:none;margin-bottom:22px}
+  .sp-item{font-size:12px;padding:9px 12px}
+  .sp-err{font-size:10px}
+
+  .diag-grid{grid-template-columns:1fr}
+  .diag-card{padding:26px 20px}
+  .diag-card h3{font-size:16px}
+
+  .out-grid{grid-template-columns:1fr}
+  .out-card{padding:24px 20px}
+
+  .test-grid{grid-template-columns:1fr}
+  .test-card{padding:24px 20px}
+  .test-q{font-size:13px}
+
+  .offer-card{padding:28px 18px}
+  .mod-name{font-size:13px}
+  .mod-key{width:28px;height:28px;font-size:11px}
+  .price-val{font-size:58px}
+
+  #final-cta{padding:72px 16px}
+  .fcta-ttl{font-size:clamp(28px,8vw,48px)}
+  .fcta-sub{font-size:14px}
+  .btn-dark{font-size:15px;padding:15px 32px}
+
+  footer{padding:36px 20px 28px}
+  .foot-top{flex-direction:column;gap:20px;margin-bottom:24px}
+  .foot-links{flex-direction:row;align-items:flex-start;gap:18px}
+  .foot-bottom{flex-direction:column;align-items:flex-start;gap:4px}
+}
+</style>
+</head>
+<body>
+<div id="rp"></div>
+
+
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-overline"><img src="logospeed.png" alt="Método SPEED" class="hero-logo"></div>
+  <h1 class="hero-h1" aria-label="Seu criativo não é ruim. Sua leitura é.">
+    <span style="display:block"><span class="ww"><span class="wi" style="animation-delay:.26s">Seu</span></span> <span class="ww"><span class="wi" style="animation-delay:.34s">criativo</span></span></span>
+    <span style="display:block"><span class="ww"><span class="wi" style="animation-delay:.44s">não</span></span> <span class="ww"><span class="wi" style="animation-delay:.52s">é</span></span> <span class="ww"><span class="wi" style="animation-delay:.6s">ruim.</span></span></span>
+    <span style="display:block" class="hero-glow-line"><span class="ww"><span class="wi" style="animation-delay:.7s">Sua</span></span> <span class="ww"><span class="wi" style="animation-delay:.78s">leitura</span></span> <span class="ww"><span class="wi" style="animation-delay:.86s">é.</span></span></span>
+  </h1>
+  <p class="hero-sub">Todo criativo que parou já te disse onde falhou. Você só não tinha o método para ler.</p>
+  <div class="vsl-wrap">
+    <div class="vsl-box">
+      <script src="https://fast.wistia.com/player.js" async></script>
+      <script src="https://fast.wistia.com/embed/3wa06aw498.js" async type="module"></script>
+      <style>wistia-player[media-id='3wa06aw498']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/3wa06aw498/swatch');display:block;filter:blur(5px);padding-top:56.25%}</style>
+      <wistia-player media-id="3wa06aw498" aspect="1.7777777777777777" autoplay playsinline volume="1" style="width:100%;border-radius:12px;overflow:hidden"></wistia-player>
+    </div>
+  </div>
+  <div class="hero-proof" id="hero-proof">
+    <div class="hp-item"><div class="hp-val"><span class="ps" id="cnt-a">+1.200</span></div><div class="hp-lbl">gestores</div><div class="hp-bar-wrap"><div class="hp-bar" id="bar-a"></div></div></div>
+    <div class="hp-sep"></div>
+    <div class="hp-item"><div class="hp-val"><span class="ps" id="cnt-b">4.9</span><span class="hp-unit"> / 5</span></div><div class="hp-lbl">avaliação</div><div class="hp-bar-wrap"><div class="hp-bar" id="bar-b"></div></div></div>
+    <div class="hp-sep"></div>
+    <div class="hp-item"><div class="hp-val"><span class="ps" id="cnt-c">R$ 50M+</span></div><div class="hp-lbl">criativos</div><div class="hp-bar-wrap"><div class="hp-bar" id="bar-c"></div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="ciclo" style="padding-top:48px">
+  <div class="sec-inner" style="max-width:700px" id="ciclo-inner">
+    <div><p class="sec-lbl">Você vive esse loop?</p><h2 class="sec-ttl">O loop que drena<br><span class="dim">sua verba todo mês</span></h2></div>
+    <div class="cycle-wrap" id="cycle-wrap">
+      <div class="cycle-vline"><div class="cycle-fill" id="cycle-fill"></div></div>
+      <div class="cycle-step"><div class="cycle-num">01</div><div class="cycle-body"><h3>Você sobe criativo no feeling</h3><p>Sem critério. Sem saber o que precisa ser validado primeiro. É intuição disfarçada de estratégia.</p></div></div>
+      <div class="cycle-step"><div class="cycle-num">02</div><div class="cycle-body"><h3>Funciona — e você não sabe por quê</h3><p>O resultado aparece. Mas sem entender o motivo, quando cair, você não vai saber o que corrigir.</p></div></div>
+      <div class="cycle-step"><div class="cycle-num">03</div><div class="cycle-body"><h3>Cai — e você pausa no impulso</h3><p>Reação, não decisão. Nenhum diagnóstico. Só mais um criativo novo no lugar do anterior.</p></div></div>
+      <div class="cycle-step"><div class="cycle-num">04</div><div class="cycle-body"><h3>A culpa vai pro produto, público ou algoritmo</h3><p>O ciclo recomeça. Criativo novo. Critério nenhum. A conta continua queimando.</p></div></div>
+      <div class="cycle-warn">
+        <div class="cycle-warn-row">
+          <span class="cycle-warn-eq">Sem critério + impulso</span>
+          <span class="cycle-warn-res">= verba evaporando</span>
+        </div>
+        <p class="cycle-warn-sub">O diagnóstico correto quebra esse ciclo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="big-idea">
+  <div id="bi-cnt" style="position:relative;z-index:1">
+    <p class="bi-lbl">O que muda na sua leitura</p>
+    <h2 class="bi-main" id="bi-main"></h2>
+    <div class="bi-div"></div>
+    <p class="bi-sub" id="bi-sub">Saber quais criativos merecem escalar — e o que fazer com os que não merecem. Isso se chama diagnóstico.</p>
+  </div>
+</section>
+
+<section class="sec" id="meta-section">
+  <div class="sec-inner">
+    <div class="rev"><p class="sec-lbl">Antes de subir qualquer anúncio</p><h2 class="sec-ttl">O que o Meta pune<br><span class="dim">antes do primeiro clique</span></h2></div>
+    <div class="meta-grid" id="meta-grid">
+      <div class="meta-card rev"><p class="meta-n">01</p><h3>Copy sem profundidade de consciência</h3><p>"Falar com quem não sabe que tem o problema como se já fosse comprar. Queima budget, educa a concorrência."</p></div>
+      <div class="meta-card rev"><p class="meta-n">02</p><h3>Ciclos com rejeição de cartão</h3><p>"Responsabilidade financeira inconsistente desqualifica sua conta dentro do algoritmo. Antes de testar criativo, arrume isso."</p></div>
+      <div class="meta-card rev"><p class="meta-n">03</p><h3>Ignorar a IA nativa da plataforma</h3><p>"O Advantage+ não é inimigo. Quem briga com a ferramenta do Zuck perde contra quem aprendeu a usá-la."</p></div>
+      <div class="meta-card rev"><p class="meta-n">04</p><h3>Produção irregular</h3><p>"O algoritmo ama constância. Conta que some e volta nunca chega ao volume mínimo para aprender de verdade."</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<div class="speed-section" id="speed-section">
+  <div class="speed-sticky" id="speed-sticky">
+    <div class="speed-left" id="speed-left">
+      <span class="speed-ghost" id="speed-ghost">S</span>
+      <span class="speed-main-letter" id="speed-letter">S</span>
+      <div class="speed-dots" id="speed-dots">
+        <div class="speed-dot on" style="width:26px"></div>
+        <div class="speed-dot" style="width:14px"></div>
+        <div class="speed-dot" style="width:14px"></div>
+        <div class="speed-dot" style="width:14px"></div>
+        <div class="speed-dot" style="width:14px"></div>
+      </div>
+    </div>
+    <div class="speed-right" id="speed-right"></div>
+  </div>
+</div>
+<!-- SPEED MOBILE — horizontal snap -->
+<div class="speed-mobile" id="speed-mobile">
+  <div class="speed-mobile-track" id="speed-mobile-track">
+    <div class="speed-slide">
+      <span class="speed-slide-ghost">S</span>
+      <p class="speed-slide-step">01 — Scroll</p>
+      <div class="speed-slide-letter">S</div>
+      <h2 class="speed-slide-name">Scroll</h2>
+      <p class="speed-slide-def">O que o Meta lê nos primeiros 3 segundos para decidir se entrega ou enterra o seu criativo. Aqui o jogo começa — ou termina.</p>
+      <div class="speed-slide-items"><div class="speed-slide-item"><div class="speed-slide-dot"></div>Contraste visual imediato</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Movimento ou quebra de padrão</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Expressão facial ou linguagem corporal</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Produto ou contexto aparecendo rápido</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Texto visual curto e legível</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Elemento de identificação imediata</div></div>
+      <p class="speed-slide-err">&#x26A0; Design genérico · Texto demais na abertura · Início lento · Visual poluído</p>
+    </div>
+    <div class="speed-slide">
+      <span class="speed-slide-ghost">P</span>
+      <p class="speed-slide-step">02 — Percepção</p>
+      <div class="speed-slide-letter">P</div>
+      <h2 class="speed-slide-name">Percepção</h2>
+      <p class="speed-slide-def">Em qual dos 5 níveis de consciência o seu lead está. Falar com todos no mesmo tom não é estratégia — é desperdício.</p>
+      <div class="speed-slide-items"><div class="speed-slide-item"><div class="speed-slide-dot"></div>1 — Inconsciente: cena do dia a dia, identificação</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>2 — Ciente do problema: diagnóstico, quebra de crença</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>3 — Ciente da solução: processo, antes e depois</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>4 — Ciente do produto: diferenciais, prova, comparação</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>5 — Mais consciente: oferta direta, garantia, CTA</div></div>
+      <p class="speed-slide-err">&#x26A0; Falar da oferta para quem ainda nem sabe que tem o problema</p>
+    </div>
+    <div class="speed-slide">
+      <span class="speed-slide-ghost">E</span>
+      <p class="speed-slide-step">03 — Essência</p>
+      <div class="speed-slide-letter">E</div>
+      <h2 class="speed-slide-name">Essência</h2>
+      <p class="speed-slide-def">A Big Idea — o ângulo que faz seu criativo parar de ser mais um anúncio no feed e virar o único que o lead vai lembrar.</p>
+      <div class="speed-slide-items"><div class="speed-slide-item"><div class="speed-slide-dot"></div>Tema → Ângulo → Big Idea</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Inversão de crença: você acha que precisa de X, mas precisa de Y</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Causa oculta: o real motivo pelo qual o problema persiste</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Mecanismo próprio: como o método resolve sem a dor comum</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Vilão escondido: o que trava o resultado de verdade</div></div>
+      <p class="speed-slide-err">&#x26A0; Não é frase bonita. É a ideia que faz a pessoa pensar: nunca vi assim.</p>
+    </div>
+    <div class="speed-slide">
+      <span class="speed-slide-ghost">E</span>
+      <p class="speed-slide-step">04 — Estrutura</p>
+      <div class="speed-slide-letter">E</div>
+      <h2 class="speed-slide-name">Estrutura</h2>
+      <p class="speed-slide-def">O esqueleto de copy que sustenta o vídeo do hook ao CTA — sem buracos, sem enrolação, sem queda de atenção no meio.</p>
+      <div class="speed-slide-items"><div class="speed-slide-item"><div class="speed-slide-dot"></div>1 — Quebra de padrão: afirmação contraintuitiva</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>2 — Identificação: você sobe anúncio, troca copy, mexe no público…</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>3 — Tensão: o que a maioria ignora antes de morrer</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>4 — Nova percepção: entenda onde falhou antes de decidir</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>5 — Mecanismo: é por isso que o Método SPEED existe</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>6 — CTA: claro, direto, sem enrolação</div></div>
+      <p class="speed-slide-err">&#x26A0; Pular do hook direto para a oferta sem construir a jornada</p>
+    </div>
+    <div class="speed-slide">
+      <span class="speed-slide-ghost">D</span>
+      <p class="speed-slide-step">05 — Distribuição</p>
+      <div class="speed-slide-letter">D</div>
+      <h2 class="speed-slide-name">Distribuição</h2>
+      <p class="speed-slide-def">Como organizar os testes, ler os sinais certos e decidir em minutos — nunca mais travar no dashboard sem saber o que fazer.</p>
+      <div class="speed-slide-items"><div class="speed-slide-item"><div class="speed-slide-dot"></div>CTR · CPC · CPM — os 3 que revelam onde falhou</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Scroll fraco → trocar hook, visual, headline</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Retenção baixa → reescrever meio, micro promessas</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Clique fraco → melhorar CTA, inserir prova</div><div class="speed-slide-item"><div class="speed-slide-dot"></div>Conversão baixa → ajustar página, revisar congruência</div></div>
+      <p class="speed-slide-err">&#x26A0; Olhar só para o CPA e ignorar os sinais que o criativo já está dando</p>
+    </div>
+  </div>
+  <div class="speed-mobile-footer">
+    <div class="speed-mobile-nav" id="speed-mobile-nav">
+      <div class="speed-mobile-dot on"></div>
+      <div class="speed-mobile-dot"></div>
+      <div class="speed-mobile-dot"></div>
+      <div class="speed-mobile-dot"></div>
+      <div class="speed-mobile-dot"></div>
+    </div>
+    <span class="speed-mobile-count" id="speed-mobile-count">01 / 05</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<section class="sec sec-white" id="diag-section">
+  <div class="sec-inner">
+    <div class="rev"><p class="sec-lbl">Leia antes de pausar</p><h2 class="sec-ttl">Três números.<br><span class="dim">Uma decisão. Sem chute.</span></h2><div class="knights"><span class="knight-lbl">Antes de pausar qualquer criativo, você lê:</span><span class="knight">CTR</span><span class="knight">CPC</span><span class="knight">CPM</span></div></div>
+    <div class="car-wrap rev" id="car-wrap">
+      <div class="car-track-outer">
+        <div class="car-track" id="car-track">
+          <div class="diag-card"><p class="diag-n">Diagnóstico 01</p><h3>Falha no Scroll</h3><div class="diag-r"><p class="diag-rl">Sintomas</p><p class="diag-rv">CTR abaixo do esperado. Entrega fraca. Hook não para o feed.</p></div><div class="diag-r"><p class="diag-rl">Causa real</p><p class="diag-rv">Visual genérico, texto de entrada ruim, promessa vaga demais.</p></div><div class="diag-r"><p class="diag-rl">Movimento certo</p><p class="diag-rv">Trocar a primeira cena, nova headline, variação visual imediata.</p></div></div>
+          <div class="diag-card"><p class="diag-n">Diagnóstico 02</p><h3>Falha na Retenção</h3><div class="diag-r"><p class="diag-rl">Sintomas</p><p class="diag-rv">Começa a assistir, abandona rápido. Queda forte nos primeiros 3s.</p></div><div class="diag-r"><p class="diag-rl">Causa real</p><p class="diag-rv">Desenvolvimento lento, roteiro previsível, sem tensão narrativa.</p></div><div class="diag-r"><p class="diag-rl">Movimento certo</p><p class="diag-rv">Reescrever o meio. Micro promessas. Cortar tudo que não tensiona.</p></div></div>
+          <div class="diag-card"><p class="diag-n">Diagnóstico 03</p><h3>Falha no Clique</h3><div class="diag-r"><p class="diag-rl">Sintomas</p><p class="diag-rv">Boa retenção, CTR baixo. Assiste até o fim, não age.</p></div><div class="diag-r"><p class="diag-rl">Causa real</p><p class="diag-rv">CTA fraco, oferta pouco clara, desejo não construído.</p></div><div class="diag-r"><p class="diag-rl">Movimento certo</p><p class="diag-rv">CTA mais direto, promessa mais objetiva, prova antes do clique.</p></div></div>
+          <div class="diag-card"><p class="diag-n">Diagnóstico 04</p><h3>Falha na Conversão</h3><div class="diag-r"><p class="diag-rl">Sintomas</p><p class="diag-rv">CTR ok, CPC aceitável, cliques chegando — poucas vendas.</p></div><div class="diag-r"><p class="diag-rl">Causa real</p><p class="diag-rv">Página fraca, oferta desalinhada com o anúncio, lead não qualificado.</p></div><div class="diag-r"><p class="diag-rl">Movimento certo</p><p class="diag-rv">Revisar congruência anúncio → página. O problema não é o criativo.</p></div></div>
+        </div>
+      </div>
+      <div class="car-controls">
+        <button class="car-btn" id="car-prev" aria-label="Anterior">&#x2190;</button>
+        <div class="car-dots" id="car-dots">
+          <div class="car-dot on"></div>
+          <div class="car-dot"></div>
+          <div class="car-dot"></div>
+          <div class="car-dot"></div>
+        </div>
+        <button class="car-btn" id="car-next" aria-label="Próximo">&#x2192;</button>
+      </div>
+      <div class="car-hint" id="car-hint"><span class="car-hint-arr l">&#x2190;</span><span class="car-hint-txt">deslize</span><span class="car-hint-arr r">&#x2192;</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="sec" id="output-section">
+  <div class="sec-inner">
+    <div class="rev"><p class="sec-lbl">Escalar, duplicar ou matar</p><h2 class="sec-ttl">Três decisões.<br><span class="dim">Zero chute.</span></h2></div>
+    <div class="out-grid" id="out-grid">
+      <div class="out-card rev" style="background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.12)"><div class="out-icon">&#x2191;</div><div class="out-ttl">Escalar</div><div class="out-tag">Criativo confirmado</div><div class="out-items"><div class="out-item"><span class="out-mk">&#x2713;</span>CPA dentro da meta</div><div class="out-item"><span class="out-mk">&#x2713;</span>CTR sólido + CPC aceitável</div><div class="out-item"><span class="out-mk">&#x2713;</span>Conversões consistentes</div><div class="out-item"><span class="out-mk">&#x2713;</span>Resultado por mais de 1 ciclo</div></div></div>
+      <div class="out-card rev" style="background:rgba(255,255,255,.015);border-color:rgba(255,255,255,.07)"><div class="out-icon">&#x27F3;</div><div class="out-ttl">Duplicar</div><div class="out-tag">Potencial confirmado</div><div class="out-items"><div class="out-item"><span class="out-mk">&#x2192;</span>Ângulo funcionou</div><div class="out-item"><span class="out-mk">&#x2192;</span>Hook performou</div><div class="out-item"><span class="out-mk">&#x2192;</span>Visual tem tração</div></div><p class="out-extra">Novo hook · novo frame · novo CTA · nova Big Idea</p></div>
+      <div class="out-card rev" style="background:rgba(255,255,255,.008);border-color:rgba(255,255,255,.04)"><div class="out-icon">&#x00D7;</div><div class="out-ttl">Matar</div><div class="out-tag">Sem aprendizado útil</div><div class="out-items"><div class="out-item"><span class="out-mk">&#x2014;</span>CTR ruim + CPC alto</div><div class="out-item"><span class="out-mk">&#x2014;</span>Retenção fraca</div><div class="out-item"><span class="out-mk">&#x2014;</span>Gasto suficiente sem sinal</div><div class="out-item"><span class="out-mk">&#x2014;</span>Nada a aproveitar</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="mq-wrap"><div class="mq-track" id="mq-track"></div></div>
+
+<section class="sec" id="test-section" style="padding-bottom:16px">
+  <div class="sec-inner" style="max-width:660px">
+    <div class="rev"><p class="sec-lbl">De quem já aplicou</p><h2 class="sec-ttl">Quem aplicou<br><span class="dim">e não voltou atrás</span></h2></div>
+    <div class="deck-wrap rev">
+      <div class="deck" id="deck">
+        <div class="deck-card test-card"><div><p class="test-qm">"</p><p class="test-q">Apliquei o SPEED em 3 criativos que estavam no chute. Os três com problema no Scroll. Troquei o hook. CTR foi de 0,7% para 2,4% em 48h. Nunca mais olhei para criativo sem o método.</p></div><div class="test-author"><div class="test-av">LM</div><div><div class="test-name">Lucas M.</div><div class="test-role">Gestor de Tráfego · 4 anos de Meta</div></div></div></div>
+        <div class="deck-card test-card"><div><p class="test-qm">"</p><p class="test-q">Antes eu pausava criativo por feeling. Agora sei exatamente onde ele falhou. Isso mudou minha conversa com o cliente — paro de justificar e começo a mostrar dado. SPEED é linguagem, não só método.</p></div><div class="test-author"><div class="test-av">RC</div><div><div class="test-name">Renata C.</div><div class="test-role">Media Buyer · Agência de performance</div></div></div></div>
+        <div class="deck-card test-card"><div><p class="test-qm">"</p><p class="test-q">Fazia tráfego há 2 anos achando que sabia ler dados. O SPEED me mostrou que eu olhava para os números certos com as perguntas erradas. Três semanas depois, CPA caiu 31%.</p></div><div class="test-author"><div class="test-av">FP</div><div><div class="test-name">Felipe P.</div><div class="test-role">Empreendedor digital · E-commerce próprio</div></div></div></div>
+      </div>
+      <button class="deck-btn" id="deck-btn">Ver próximo feedback <span class="deck-btn-ico">&#x2192;</span></button>
+      <div class="sh-wrap" id="sh-wrap"><span class="sh-l">&#x2190;</span><span class="sh-txt">deslize</span><span class="sh-r">&#x2192;</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="oferta" style="padding-top:16px">
+  <div class="sec-inner-md">
+    <div class="rev" style="text-align:center"><p class="sec-lbl" style="text-align:center">O que vem no método</p><h2 class="sec-ttl" style="text-align:center">Tudo para parar<br><span class="dim">de adivinhar de uma vez</span></h2></div>
+    <div class="offer-card rev">
+      <div class="mod-list">
+        <div class="mod-row"><div class="mod-key">S</div><div class="mod-name">Scroll — O que para o feed nos primeiros 3s</div><div class="mod-tag">Módulo 1</div></div>
+        <div class="mod-row"><div class="mod-key">P</div><div class="mod-name">Percepção — Os 5 níveis de consciência do lead</div><div class="mod-tag">Módulo 2</div></div>
+        <div class="mod-row"><div class="mod-key">E</div><div class="mod-name">Essência — A Big Idea que diferencia no feed</div><div class="mod-tag">Módulo 3</div></div>
+        <div class="mod-row"><div class="mod-key">E</div><div class="mod-name">Estrutura — Do hook ao CTA sem buracos</div><div class="mod-tag">Módulo 4</div></div>
+        <div class="mod-row"><div class="mod-key">D</div><div class="mod-name">Distribuição — Ler dados e decidir em minutos</div><div class="mod-tag">Módulo 5</div></div>
+        <div class="mod-row"><div class="mod-key">&#x2605;</div><div class="mod-name">Checklist SPEED — diagnóstico em tempo real</div><div class="mod-tag b">Bônus</div></div>
+      </div>
+      <div class="price-blk">
+        <p class="price-from">de R$ 497</p>
+        <div style="display:flex;align-items:flex-start;justify-content:center;gap:4px">
+          <span class="price-val"><span class="price-pfx">R$</span> 97</span>
+        </div>
+        <p class="price-note">ou 12x de R$ 9,13 · Acesso imediato e vitalício</p>
+      </div>
+      <a href="#" class="btn-main">Quero o Método SPEED &rarr;</a>
+      <p class="offer-note">Pagamento seguro · Acesso em até 5 minutos</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="guar-wrap">
+    <div class="rev">
+      <div class="guar-badge">
+        <svg viewBox="0 0 80 80" width="80" height="80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="37" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+          <circle class="guar-ring" cx="40" cy="40" r="37" stroke="rgba(255,255,255,.22)" stroke-width=".75" stroke-dasharray="12 8" stroke-linecap="round"/>
+          <text x="40" y="49" text-anchor="middle" font-size="30" font-weight="700" fill="rgba(255,255,255,.75)" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif">7</text>
+        </svg>
+      </div>
+      <p class="guar-unit">dias de garantia total</p>
+      <h2 class="guar-statement">Se não funcionar,<br><span>devolvemos tudo.</span></h2>
+      <p class="guar-accord">O acordo é simples</p>
+      <ul class="guar-steps">
+        <li class="guar-step">Acesse e aplique o método nos seus criativos</li>
+        <li class="guar-step">Se não mudar sua forma de ler anúncios — manda um email</li>
+        <li class="guar-step">Devolvemos 100% do valor em até 24h. Sem formulário.</li>
+      </ul>
+      <p class="guar-final">Sem burocracia · Sem justificativa · Sem enrolação</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="final-cta">
+  <div class="fcta-bg-word">SPEED</div>
+  <div style="position:relative;z-index:1" class="rev" id="fcta-inner">
+    <p class="fcta-lbl">Você já sabe o que fazer</p>
+    <h2 class="fcta-ttl">A próxima verba<br>que você queimar<br>é por escolha.</h2>
+    <div class="fcta-before-after">
+      <span class="fcta-ba-item">Antes: feeling</span>
+      <span class="fcta-ba-sep"></span>
+      <span class="fcta-ba-item after">Depois: diagnóstico</span>
+    </div>
+    <p class="fcta-sub">Seus criativos já estão te dando as respostas. O Método SPEED te ensina a lê-las — antes de gastar mais um real à toa.</p>
+    <p class="fcta-social"><strong>+1.200 gestores</strong> já tomaram essa decisão</p>
+    <p class="fcta-anchor"><s>R$ 497</s> &nbsp;por apenas&nbsp; <strong>R$ 97</strong></p>
+    <a href="#oferta" class="btn-dark">Quero o Método SPEED &rarr;</a>
+    <div class="fcta-trust">
+      <span>7 dias de garantia</span>
+      <span class="fcta-trust-dot"></span>
+      <span>Acesso imediato</span>
+      <span class="fcta-trust-dot"></span>
+      <span>Sem mensalidade</span>
+    </div>
+    <img src="logospeed2.png" alt="Método SPEED" class="fcta-logo">
+  </div>
+</section>
+
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">
+      <img src="logospeed.png" alt="Método SPEED">
+      <p class="foot-tagline">Framework de diagnóstico<br>de criativos para Meta Ads</p>
+    </div>
+    <div class="foot-links">
+      <a href="#" class="foot-link">Termos de uso</a>
+      <a href="#" class="foot-link">Política de privacidade</a>
+      <a href="#" class="foot-link">Suporte</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span class="foot-copy">© 2026 Método SPEED · Todos os direitos reservados</span>
+    <span class="foot-cnpj">CNPJ 57.986.269/0001-06</span>
+    <span class="foot-dev">Desenvolvido por <strong>MV — Venda com Criativos</strong></span>
+  </div>
+</footer>
+
+<script>
+var SD=[
+  {l:'S',name:'Scroll',sub:'01 — Scroll',def:'O que o Meta lê nos primeiros 3 segundos para decidir se entrega ou enterra o seu criativo. Aqui o jogo começa — ou termina.',items:['Contraste visual imediato','Movimento ou quebra de padrão','Expressão facial ou linguagem corporal','Produto ou contexto aparecendo rápido','Texto visual curto e legível','Elemento de identificação imediata'],err:'Design genérico · Texto demais na abertura · Início lento · Visual poluído'},
+  {l:'P',name:'Percepção',sub:'02 — Percepção',def:'Em qual dos 5 níveis de consciência o seu lead está. Falar com todos no mesmo tom não é estratégia — é desperdício.',items:['1 — Inconsciente: cena do dia a dia, identificação','2 — Ciente do problema: diagnóstico, quebra de crença','3 — Ciente da solução: processo, antes e depois','4 — Ciente do produto: diferenciais, prova, comparação','5 — Mais consciente: oferta direta, garantia, CTA'],err:'Falar da oferta para quem ainda nem sabe que tem o problema'},
+  {l:'E',name:'Essência',sub:'03 — Essência',def:'A Big Idea — o ângulo que faz seu criativo parar de ser mais um anúncio no feed e virar o único que o lead vai lembrar.',items:['Tema → Ângulo → Big Idea','Inversão de crença: você acha que precisa de X, mas precisa de Y','Causa oculta: o real motivo pelo qual o problema persiste','Mecanismo próprio: como o método resolve sem a dor comum','Vilão escondido: o que trava o resultado de verdade'],err:'"Não é frase bonita. É a ideia que faz a pessoa pensar: nunca vi assim."'},
+  {l:'E',name:'Estrutura',sub:'04 — Estrutura',def:'O esqueleto de copy que sustenta o vídeo do hook ao CTA — sem buracos, sem enrolação, sem queda de atenção no meio.',items:['1 — Quebra de padrão: afirmação contraintuitiva','2 — Identificação: você sobe anúncio, troca copy, mexe no público…','3 — Tensão: o que a maioria ignora antes de morrer','4 — Nova percepção: entenda onde falhou antes de decidir','5 — Mecanismo: é por isso que o Método SPEED existe','6 — CTA: claro, direto, sem enrolação'],err:'Pular do hook direto para a oferta sem construir a jornada'},
+  {l:'D',name:'Distribuição',sub:'05 — Distribuição',def:'Como organizar os testes, ler os sinais certos e decidir em minutos — nunca mais travar no dashboard sem saber o que fazer.',items:['CTR · CPC · CPM — os 3 que revelam onde falhou','Scroll fraco → trocar hook, visual, headline','Retenção baixa → reescrever meio, micro promessas','Clique fraco → melhorar CTA, inserir prova','Conversão baixa → ajustar página, revisar congruência'],err:'Olhar só para o CPA e ignorar os sinais que o criativo já está dando'}
+];
+
+// NAV
+var nav=document.getElementById('nav');
+window.addEventListener('scroll',function(){nav.classList.toggle('stuck',window.scrollY>60)},{passive:true});
+
+// REVEAL
+var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.12});
+document.querySelectorAll('.rev').forEach(function(el){ro.observe(el)});
+
+// CYCLE LINE
+var cf=document.getElementById('cycle-fill');
+var co=new IntersectionObserver(function(e){if(e[0].isIntersecting)cf.style.height='100%'},{threshold:.2});
+co.observe(document.getElementById('cycle-wrap'));
+
+// BIG IDEA
+var bm=document.getElementById('bi-main'),bs=document.getElementById('bi-sub');
+var bw='O problema não é criar mais anúncios.'.split(' ');
+bm.innerHTML=bw.map(function(w){return '<span class="bi-word">'+w+'</span>'}).join(' ');
+// bi-word illumination handled by scroll listener below
+
+// STAGGER
+function stagger(id,cls,delay,thr){
+  var c=document.getElementById(id);
+  if(!c)return;
+  var o=new IntersectionObserver(function(e){if(e[0].isIntersecting)c.querySelectorAll(cls).forEach(function(el,i){setTimeout(function(){el.classList.add('in')},i*delay)})},{threshold:thr||.1});
+  o.observe(c);
+}
+stagger('meta-grid','.meta-card',90);
+// CAROUSEL
+(function(){
+  var track=document.getElementById('car-track'),
+      dots=document.getElementById('car-dots').querySelectorAll('.car-dot'),
+      cards=track.querySelectorAll('.diag-card'),
+      total=cards.length,cur=0;
+  function goTo(n){
+    cur=(n%total+total)%total;
+    track.style.transform='translateX(-'+cur*100+'%)';
+    dots.forEach(function(d,i){d.classList.toggle('on',i===cur)});
+  }
+  document.getElementById('car-prev').addEventListener('click',function(){goTo(cur-1)});
+  document.getElementById('car-next').addEventListener('click',function(){goTo(cur+1)});
+  dots.forEach(function(d,i){d.addEventListener('click',function(){goTo(i)})});
+  // swipe
+  var sx=0;
+  track.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
+  track.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-sx;
+    if(Math.abs(dx)>40)goTo(dx<0?cur+1:cur-1);
+  },{passive:true});
+})();
+stagger('out-grid','.out-card',120);
+
+// SPEED STICKY
+var ss=document.getElementById('speed-section'),sl=document.getElementById('speed-letter'),sg=document.getElementById('speed-ghost'),sr=document.getElementById('speed-right'),sdots=document.getElementById('speed-dots').querySelectorAll('.speed-dot'),cur=-1;
+function renderS(step){
+  if(step===cur)return;cur=step;var d=SD[step];
+  sl.textContent=d.l;sg.textContent=d.l;
+  sdots.forEach(function(dot,i){dot.classList.toggle('on',i===step);dot.style.width=i===step?'26px':'14px'});
+  sr.innerHTML='<div class="sp-content"><p class="sp-sub">'+d.sub+'</p><h2 class="sp-name">'+d.name+'</h2><p class="sp-def">'+d.def+'</p><div class="sp-items">'+d.items.map(function(item,i){return'<div class="sp-item" style="animation-delay:'+(0.05+i*0.055)+'s"><div class="sp-dot"></div>'+item+'</div>'}).join('')+'</div>'+(d.err?'<p class="sp-err">&#x26A0; '+d.err+'</p>':'')+'</div>';
+}
+renderS(0);
+function onSc(){var r=ss.getBoundingClientRect(),sc=ss.offsetHeight-window.innerHeight,p=Math.max(0,Math.min(1,-r.top/sc));renderS(Math.min(4,Math.floor(p*5)))}
+window.addEventListener('scroll',onSc,{passive:true});onSc();
+
+// MARQUEE
+var mqItems=['Método SPEED','Scroll','Percepção','Essência','Estrutura','Distribuição','CTR · CPC · CPM','Validação Estratégica','Big Idea','Hook','CTA','Diagnóstico'];
+var mqD=[].concat(mqItems,mqItems);
+document.getElementById('mq-track').innerHTML=mqD.map(function(item){return'<span class="mq-item">'+item+'<span class="mq-dot"></span></span>'}).join('');
+
+// DECK
+(function(){
+  var cards=Array.from(document.querySelectorAll('.deck-card'));
+  var n=cards.length; // 3
+  var cur=0; // index of card currently at front
+  var busy=false;
+
+  // Stack slot definitions: [front, middle, back]
+  var POS=[
+    {tf:'rotate(0deg) translate(0px,0px)',   z:3, op:'1'},
+    {tf:'rotate(2.2deg) translate(14px,16px)', z:2, op:'1'},
+    {tf:'rotate(-1.6deg) translate(-10px,22px)', z:1, op:'0.88'}
+  ];
+
+  function place(ci,pi,animated){
+    var c=cards[ci],p=POS[pi];
+    c.style.transition=animated?'transform .54s cubic-bezier(.19,1,.22,1),opacity .44s ease':'none';
+    c.style.transform=p.tf;
+    c.style.zIndex=p.z;
+    c.style.opacity=p.op;
+  }
+
+  // Initial layout (no animation)
+  for(var i=0;i<n;i++) place(i,i,false);
+
+  document.getElementById('deck-btn').addEventListener('click',function(){
+    if(busy)return; busy=true;
+
+    var fc=cards[cur];
+
+    // Slide front card out to right + fade
+    fc.style.transition='transform .36s cubic-bezier(.4,0,.6,1),opacity .28s ease';
+    fc.style.transform='translateX(100px) rotate(8deg)';
+    fc.style.opacity='0';
+    fc.style.zIndex='10';
+
+    setTimeout(function(){
+      // Instantly jump the exited card to back slot
+      place(cur,n-1,false);
+
+      // Advance cur
+      cur=(cur+1)%n;
+
+      // After one paint frame, animate remaining cards to new slots
+      setTimeout(function(){
+        for(var i=0;i<n;i++){
+          var pos=(i-cur+n)%n;
+          place(i,pos,true);
+        }
+        setTimeout(function(){busy=false;},580);
+      },18);
+    },375);
+  });
+})();
+
+// READ PROGRESS
+(function(){
+  var rp=document.getElementById('rp');
+  window.addEventListener('scroll',function(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    rp.style.width=Math.min(window.scrollY/h*100,100)+'%';
+  },{passive:true});
+})();
+
+// COUNT-UP
+(function(){
+  function ease(t){return 1-Math.pow(1-t,3)}
+  function run(el,target,dur,fmt){
+    var s=null;
+    function tick(ts){
+      if(!s)s=ts;
+      var p=Math.min((ts-s)/dur,1);
+      el.textContent=fmt(target*ease(p));
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  var hp=document.getElementById('hero-proof');
+  if(!hp)return;
+  var done=false;
+  var obs=new IntersectionObserver(function(e){
+    if(e[0].isIntersecting&&!done){
+      done=true;
+      setTimeout(function(){
+        run(document.getElementById('cnt-a'),1200,1800,function(v){return'+'+Math.floor(v).toLocaleString('pt-BR')});
+        run(document.getElementById('cnt-b'),4.9,1600,function(v){return v.toFixed(1).replace('.',',')});
+        run(document.getElementById('cnt-c'),50,1600,function(v){return'R$ '+Math.floor(v)+'M+'});
+        // Stat bars
+        setTimeout(function(){
+          var ba=document.getElementById('bar-a'),bb=document.getElementById('bar-b'),bc=document.getElementById('bar-c');
+          if(ba)ba.style.width='84%';
+          if(bb)bb.style.width='98%';
+          if(bc)bc.style.width='70%';
+        },200);
+      },300);
+    }
+  },{threshold:.6});
+  obs.observe(hp);
+})();
+
+// STICKY CTA
+(function(){
+  var sc=document.getElementById('sticky-cta');
+  if(!sc)return;
+  new IntersectionObserver(function(e){
+    sc.classList.toggle('vis',!e[0].isIntersecting);
+  },{threshold:0}).observe(document.getElementById('hero'));
+  new IntersectionObserver(function(e){
+    if(e[0].isIntersecting)sc.classList.remove('vis');
+  },{threshold:.15}).observe(document.getElementById('oferta'));
+})();
+
+// SPEED MOBILE NAV
+(function(){
+  var track=document.getElementById('speed-mobile-track');
+  if(!track)return;
+  var dots=document.querySelectorAll('.speed-mobile-dot');
+  var count=document.getElementById('speed-mobile-count');
+  var hintGone=false;
+  function upd(){
+    var cardW=track.querySelector('.speed-slide').offsetWidth+12;var idx=Math.round(track.scrollLeft/cardW);
+    idx=Math.max(0,Math.min(idx,dots.length-1));
+    dots.forEach(function(d,i){d.classList.toggle('on',i===idx)});
+    if(count)count.textContent='0'+(idx+1)+' / 05';
+    if(!hintGone&&track.scrollLeft>20){hintGone=true}
+  }
+  track.addEventListener('scroll',upd,{passive:true});
+})();
+
+// SWIPE HINTS — hide on first interaction
+(function(){
+  var sh=document.getElementById('sh-wrap');
+  var ch=document.getElementById('car-hint');
+  function hideAfter(el,evId){
+    if(!el)return;
+    var btn=document.getElementById(evId);
+    if(!btn)return;
+    function hide(){el.classList.add('gone');btn.removeEventListener('click',hide)}
+    btn.addEventListener('click',hide);
+    // Also hide on touch swipe
+    var tr=document.getElementById('car-track')||document.getElementById('deck');
+    if(tr)tr.addEventListener('touchend',function(){el.classList.add('gone')},{once:true,passive:true});
+  }
+  hideAfter(sh,'deck-btn');
+  hideAfter(ch,'car-next');
+  // Auto-hide after 6s
+  if(sh)setTimeout(function(){sh.classList.add('gone')},6000);
+  if(ch)setTimeout(function(){ch.classList.add('gone')},6000);
+})();
+
+// VSL
+// VSL embedded via Wistia
+
+// ── CICLO SCROLL-DRIVEN REVEAL ────────────────────────────────────────
+(function(){
+  var inner = document.getElementById('ciclo-inner');
+  if(!inner) return;
+  inner.style.cssText += 'opacity:0;transform:translateY(56px);will-change:opacity,transform';
+  function reveal(){
+    var rect = inner.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 0.72)));
+    var eased = progress < 0.5 ? 2*progress*progress : -1+(4-2*progress)*progress;
+    inner.style.opacity = eased;
+    inner.style.transform = 'translateY('+(56*(1-eased))+'px)';
+  }
+  window.addEventListener('scroll', reveal, {passive:true});
+  reveal();
+})();
+
+// ── HERO PARALLAX ─────────────────────────────────────────────────────
+(function(){
+  var h1=document.querySelector('.hero-h1');
+  var sub=document.querySelector('.hero-sub');
+  var glow=document.querySelector('.hero-glow');
+  if(!h1)return;
+  var lines=Array.from(h1.querySelectorAll('span[style]'));
+  window.addEventListener('scroll',function(){
+    var p=window.scrollY;
+    if(p>window.innerHeight)return;
+    lines.forEach(function(line,i){
+      var speed=0.08+(i*0.04);
+      line.style.transform='translateY('+(-p*speed)+'px)';
+    });
+    if(sub)sub.style.transform='translateY('+(-p*0.14)+'px)';
+    if(glow)glow.style.transform='translateX(-50%) translateY('+(-p*0.06)+'px)';
+  },{passive:true});
+})();
+
+// ── TEXT ILLUMINATION ──────────────────────────────────────────────────
+(function(){
+  var section=document.getElementById('big-idea');
+  var bm2=document.getElementById('bi-main');
+  var bs2=document.getElementById('bi-sub');
+  if(!section||!bm2)return;
+  function illuminate(){
+    var rect=section.getBoundingClientRect();
+    var vh=window.innerHeight;
+    var progress=Math.max(0,Math.min(1,(vh-rect.top)/(vh*0.85)));
+    var words=bm2.querySelectorAll('.bi-word');
+    var n=words.length;
+    words.forEach(function(w,i){
+      var wp=Math.max(0,Math.min(1,(progress-(i/n)*0.65)/0.35));
+      if(wp>0.5)w.classList.add('lit');else w.classList.remove('lit');
+    });
+    if(progress>0.72)bs2.classList.add('lit');else bs2.classList.remove('lit');
+  }
+  window.addEventListener('scroll',illuminate,{passive:true});
+  illuminate();
+})();
+
+// ── META FOCUS FADE ────────────────────────────────────────────────────
+(function(){
+  var section=document.getElementById('meta-section');
+  if(!section)return;
+  var cards=Array.from(section.querySelectorAll('.meta-card'));
+  if(!cards.length)return;
+  function update(){
+    var vh=window.innerHeight;
+    var center=vh/2;
+    var dists=cards.map(function(c){
+      var r=c.getBoundingClientRect();
+      return Math.abs((r.top+r.bottom)/2-center);
+    });
+    var minD=Math.min.apply(null,dists);
+    cards.forEach(function(c,i){
+      c.classList.toggle('dim',dists[i]>minD+40);
+    });
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  update();
+})();
+
+// ── BORDER DRAW SVG ────────────────────────────────────────────────────
+(function(){
+  var cards=document.querySelectorAll('.out-card');
+  var ns='http://www.w3.org/2000/svg';
+  cards.forEach(function(card){
+    var svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('class','bdraw-svg');
+    var rect2=document.createElementNS(ns,'rect');
+    rect2.setAttribute('class','bdraw-rect');
+    rect2.setAttribute('rx','19');rect2.setAttribute('ry','19');
+    rect2.setAttribute('x','0.5');rect2.setAttribute('y','0.5');
+    svg.appendChild(rect2);card.appendChild(svg);
+    function sizeIt(){
+      var w=card.offsetWidth,h=card.offsetHeight;
+      svg.setAttribute('viewBox','0 0 '+w+' '+h);
+      rect2.setAttribute('width',w-1);rect2.setAttribute('height',h-1);
+      var p=2*(w+h);
+      rect2.style.strokeDasharray=p;rect2.style.strokeDashoffset=p;
+    }
+    sizeIt();
+    new IntersectionObserver(function(e){
+      if(e[0].isIntersecting){setTimeout(function(){rect2.style.strokeDashoffset='0'},80);}
+    },{threshold:.3}).observe(card);
+  });
+})();
+
+// ── SECTION COUNTER ────────────────────────────────────────────────────
+(function(){
+  var ctr=document.getElementById('sec-counter');
+  if(!ctr)return;
+  var secs=['ciclo','big-idea','meta-section','speed-section','diag-section','output-section','test-section','oferta','final-cta'];
+  var labels=['01','02','03','04','05','06','07','08','09'];
+  var whiteSecs=['big-idea','diag-section','final-cta'];
+  secs.forEach(function(id,i){
+    var el=document.getElementById(id);if(!el)return;
+    new IntersectionObserver(function(e){
+      if(e[0].isIntersecting){
+        ctr.textContent=labels[i]+' / 09';
+        ctr.classList.add('vis');
+        if(whiteSecs.indexOf(id)>-1)ctr.classList.add('inv');else ctr.classList.remove('inv');
+      }
+    },{threshold:.25}).observe(el);
+  });
+  var hero=document.getElementById('hero');
+  if(hero){
+    new IntersectionObserver(function(e){
+      if(e[0].isIntersecting)ctr.classList.remove('vis');
+    },{threshold:.4}).observe(hero);
+  }
+})();
+
+// ── FAN-OUT INTRO (deck) ───────────────────────────────────────────────
+(function(){
+  var deck=document.getElementById('deck');
+  if(!deck)return;
+  var cards=Array.from(deck.querySelectorAll('.deck-card'));
+  if(cards.length<3)return;
+  var done=false;
+  var REST=[
+    {tf:'rotate(0deg) translate(0px,0px)',op:'1',z:3},
+    {tf:'rotate(2.2deg) translate(14px,16px)',op:'1',z:2},
+    {tf:'rotate(-1.6deg) translate(-10px,22px)',op:'0.88',z:1}
+  ];
+  var FAN=[
+    {tf:'rotate(-14deg) translate(-44px,-18px)',z:5},
+    {tf:'rotate(0deg) translate(0px,-22px)',z:6},
+    {tf:'rotate(14deg) translate(44px,-18px)',z:4}
+  ];
+  new IntersectionObserver(function(e){
+    if(e[0].isIntersecting&&!done){
+      done=true;
+      setTimeout(function(){
+        cards.forEach(function(c,i){
+          c.style.transition='transform .48s cubic-bezier(.19,1,.22,1) '+(i*0.05)+'s';
+          c.style.transform=FAN[i].tf;c.style.zIndex=FAN[i].z;
+        });
+        setTimeout(function(){
+          cards.forEach(function(c,i){
+            c.style.transition='transform .55s cubic-bezier(.19,1,.22,1) '+(i*0.06)+'s, opacity .5s ease';
+            c.style.transform=REST[i].tf;c.style.opacity=REST[i].op;c.style.zIndex=REST[i].z;
+          });
+        },620);
+      },450);
+    }
+  },{threshold:.4}).observe(deck);
+})();
+</script>
+<div id="sec-counter">01</div>
+<div id="sticky-cta"><a href="#oferta">Quero o Método SPEED <span>&#x2192;</span></a></div>
+</body>
+</html>
