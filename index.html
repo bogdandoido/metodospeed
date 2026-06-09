@@ -40,6 +40,7 @@ nav.stuck{background:rgba(0,0,0,.88);backdrop-filter:blur(20px);-webkit-backdrop
 .ww{display:inline-block;overflow:hidden;vertical-align:bottom}
 .wi{display:inline-block;opacity:0;transform:translateY(110%);animation:wordReveal .85s cubic-bezier(.19,1,.22,1) both}
 .hero-sub{font-size:clamp(16px,3.5vw,22px);font-weight:300;color:rgba(255,255,255,.36);margin-bottom:44px;max-width:440px;animation:fadeUp .8s cubic-bezier(.19,1,.22,1) .85s both;line-height:1.5}
+.hero-sub strong{color:rgba(255,255,255,.82);font-weight:600}
 .vsl-wrap{width:100%;max-width:780px;margin-bottom:36px;animation:fadeUp 1s cubic-bezier(.19,1,.22,1) 1.05s both}
 .vsl-box{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;cursor:pointer;background:#090909;border:.5px solid rgba(255,255,255,.08);box-shadow:0 0 0 .5px rgba(255,255,255,.03),0 40px 90px rgba(0,0,0,.9),inset 0 0 50px rgba(255,255,255,.015)}
 .vsl-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.04) 0%,transparent 55%)}
@@ -52,7 +53,7 @@ nav.stuck{background:rgba(0,0,0,.88);backdrop-filter:blur(20px);-webkit-backdrop
 .vsl-rec{position:absolute;top:14px;left:14px;font-size:9px;color:rgba(255,255,255,.18)}
 .vsl-time{position:absolute;top:14px;right:14px;font-size:9px;color:rgba(255,255,255,.18)}
 .vsl-bar{position:absolute;bottom:14px;left:12%;right:12%;height:1px;background:rgba(255,255,255,.05);border-radius:1px}
-.hero-proof{display:flex;align-items:center;gap:0;font-size:12px;color:rgba(255,255,255,.28);animation:fadeIn .8s ease 1.5s both;border:.5px solid rgba(255,255,255,.08);border-radius:100px;padding:10px 20px;gap:16px}
+.hero-proof{display:flex;align-items:center;gap:0;font-size:12px;color:rgba(255,255,255,.28);animation:fadeIn .8s ease 1.5s both;border:.5px solid rgba(255,255,255,.08);border-radius:100px;padding:10px 28px;gap:16px;width:100%;max-width:360px}
 .psep{width:.5px;height:12px;background:rgba(255,255,255,.1)}
 .ps{color:rgba(255,255,255,.65);font-weight:600}
 .scroll-ind{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;animation:fadeIn 1s ease 2.1s both}
@@ -100,18 +101,18 @@ nav.stuck{background:rgba(0,0,0,.88);backdrop-filter:blur(20px);-webkit-backdrop
 
 /* CYCLE */
 .cycle-wrap{position:relative;margin-top:56px}
-.cycle-vline{position:absolute;left:19px;top:36px;bottom:36px;width:1px;background:rgba(255,255,255,.05);overflow:hidden}
+.cycle-vline{position:absolute;left:19px;top:36px;bottom:72px;width:1px;background:rgba(255,255,255,.05);overflow:hidden}
 .cycle-fill{width:100%;height:0%;background:linear-gradient(to bottom,rgba(255,255,255,.3),rgba(255,255,255,.03));transition:height 2.2s cubic-bezier(.19,1,.22,1)}
 .cycle-step{display:flex;gap:24px;padding-bottom:40px;position:relative}
 .cycle-num{width:38px;height:38px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:.05em;border:.5px solid rgba(255,255,255,.1);background:#000;position:relative;z-index:1}
 .cycle-body{padding-top:6px}
 .cycle-body h3{font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.3}
 .cycle-body p{font-size:13px;color:rgba(255,255,255,.33);line-height:1.65}
-.cycle-warn{margin-top:32px;padding-top:20px;border-top:.5px solid rgba(255,255,255,.08)}
-.cycle-warn-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.cycle-warn-eq{font-size:11px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.25);text-transform:uppercase}
-.cycle-warn-res{font-size:14px;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:-.01em}
-.cycle-warn-sub{margin-top:6px;font-size:11px;color:rgba(255,255,255,.18);letter-spacing:.06em;text-transform:uppercase}
+.cycle-warn{margin-top:32px;padding-top:24px;border-top:.5px solid rgba(255,255,255,.08);text-align:center;opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.19,1,.22,1),transform .75s cubic-bezier(.19,1,.22,1)}
+.cycle-warn.in{opacity:1;transform:translateY(0)}
+.cycle-warn-eq{font-size:11px;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.25);text-transform:uppercase;display:block;margin-bottom:6px}
+.cycle-warn-res{font-size:17px;font-weight:700;color:rgba(255,255,255,.82);letter-spacing:-.01em;display:block;margin-bottom:8px}
+.cycle-warn-sub{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.08em;text-transform:uppercase}
 
 /* BIG IDEA — white section with frame deco */
 #big-idea{padding:80px 20px;text-align:center;background:#f5f5f5;color:#000;position:relative;overflow:hidden}
@@ -198,15 +199,16 @@ nav.stuck{background:rgba(0,0,0,.88);backdrop-filter:blur(20px);-webkit-backdrop
 .mod-row:last-child{border-bottom:none}
 .mod-row:active{background:rgba(255,255,255,.025)}
 .mod-key{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:rgba(255,255,255,.38);background:rgba(255,255,255,.06)}
+.mod-key.star{color:#facc15;background:rgba(250,204,21,.12);box-shadow:0 0 10px rgba(250,204,21,.4),0 0 22px rgba(250,204,21,.15)}
 .mod-name{flex:1;font-size:14px;color:rgba(255,255,255,.58);font-weight:500}
 .mod-tag{font-size:10px;padding:3px 11px;border-radius:100px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.07);color:rgba(255,255,255,.26);white-space:nowrap}
 .mod-tag.b{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.14);color:rgba(255,255,255,.52)}
 .price-blk{text-align:center;margin-bottom:32px}
 .price-from{font-size:13px;color:rgba(255,255,255,.22);text-decoration:line-through;margin-bottom:4px}
-.price-val{font-size:72px;font-weight:900;line-height:1;letter-spacing:-.04em;background:linear-gradient(90deg,#fff 0%,#aaa 40%,#fff 60%,#aaa 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
-.price-pfx{font-size:22px;font-weight:600;vertical-align:top;margin-top:8px;display:inline-block}
+.price-val{font-size:128px;font-weight:900;line-height:1;letter-spacing:-.05em;background:linear-gradient(90deg,#fff 0%,#aaa 40%,#fff 60%,#aaa 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+.price-pfx{font-size:36px;font-weight:700;vertical-align:top;margin-top:14px;display:inline-block;margin-right:6px;letter-spacing:.08em}
 .price-note{font-size:12px;color:rgba(255,255,255,.22);margin-top:8px}
-.btn-main{display:block;width:100%;text-align:center;font-size:16px;font-weight:700;background:#fff;color:#000;padding:17px 24px;border-radius:14px;text-decoration:none;transition:all .2s cubic-bezier(.19,1,.22,1)}
+.btn-main{display:block;width:100%;text-align:center;font-size:16px;font-weight:700;background:#22c55e;color:#fff;padding:17px 24px;border-radius:14px;text-decoration:none;transition:all .28s cubic-bezier(.19,1,.22,1);box-shadow:0 0 18px rgba(34,197,94,.5),0 0 40px rgba(34,197,94,.2),0 4px 16px rgba(0,0,0,.3);animation:greenGlow 3.5s ease-in-out infinite}
 .btn-main:active{transform:scale(.97)}
 .offer-note{text-align:center;font-size:11px;color:rgba(255,255,255,.18);margin-top:12px}
 
@@ -239,9 +241,10 @@ nav.stuck{background:rgba(0,0,0,.88);backdrop-filter:blur(20px);-webkit-backdrop
 .fcta-anchor{font-size:12px;color:rgba(0,0,0,.3);margin-bottom:10px;letter-spacing:.01em}
 .fcta-anchor s{color:rgba(0,0,0,.22)}
 .fcta-anchor strong{color:#000;font-size:15px;font-weight:700}
-.btn-dark{display:inline-flex;align-items:center;gap:8px;background:#000;color:#fff;font-size:16px;font-weight:700;padding:17px 42px;border-radius:100px;text-decoration:none;transition:all .25s cubic-bezier(.19,1,.22,1);position:relative}
-.btn-dark::after{content:'';position:absolute;inset:-3px;border-radius:100px;border:1.5px solid rgba(0,0,0,.15);animation:btnPulse 2.4s ease-in-out infinite;pointer-events:none}
-@keyframes btnPulse{0%,100%{opacity:0;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+.btn-dark{display:inline-flex;align-items:center;gap:8px;background:#22c55e;color:#fff;font-size:16px;font-weight:700;padding:17px 42px;border-radius:100px;text-decoration:none;transition:all .25s cubic-bezier(.19,1,.22,1);position:relative;box-shadow:0 0 18px rgba(34,197,94,.5),0 0 42px rgba(34,197,94,.2),0 4px 16px rgba(0,0,0,.3);animation:greenGlow 3.5s ease-in-out infinite}
+.btn-dark::after{content:'';position:absolute;inset:-4px;border-radius:100px;border:1px solid rgba(34,197,94,.35);animation:greenRing 3.5s ease-in-out infinite;pointer-events:none}
+@keyframes greenGlow{0%,100%{box-shadow:0 0 14px rgba(34,197,94,.4),0 0 32px rgba(34,197,94,.15),0 4px 16px rgba(0,0,0,.3)}50%{box-shadow:0 0 26px rgba(34,197,94,.7),0 0 60px rgba(34,197,94,.28),0 4px 20px rgba(0,0,0,.3)}}
+@keyframes greenRing{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.85;transform:scale(1.05)}}
 .btn-dark:active{transform:scale(.97)}
 .fcta-trust{margin-top:16px;font-size:11px;color:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
 .fcta-trust-dot{width:2px;height:2px;border-radius:50%;background:rgba(0,0,0,.2)}
@@ -291,9 +294,10 @@ footer{padding:48px 24px 36px;border-top:.5px solid rgba(255,255,255,.07);backgr
 .deck-wrap{margin-top:28px;text-align:center}
 .deck{position:relative;max-width:540px;height:295px;margin:0 auto 30px;-webkit-tap-highlight-color:transparent}
 .deck-card{position:absolute;top:0;left:0;right:0;border-radius:20px;will-change:transform,opacity}
-.deck-btn{display:inline-flex;align-items:center;gap:9px;background:transparent;color:rgba(255,255,255,.48);font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;border:.5px solid rgba(255,255,255,.12);border-radius:100px;padding:11px 26px;cursor:pointer;outline:none;transition:background .22s,color .22s,border-color .22s;-webkit-tap-highlight-color:transparent}
-.deck-btn:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);border-color:rgba(255,255,255,.22)}
-.deck-btn:active{transform:scale(.95)}
+.deck-btn{display:inline-flex;align-items:center;gap:9px;background:#fff;color:#000;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:none;border-radius:100px;padding:12px 28px;cursor:pointer;outline:none;transition:all .28s cubic-bezier(.19,1,.22,1);-webkit-tap-highlight-color:transparent;box-shadow:0 0 18px rgba(255,255,255,.35),0 0 40px rgba(255,255,255,.12),0 4px 16px rgba(0,0,0,.3);animation:btnGlow 3.5s ease-in-out infinite}
+@keyframes btnGlow{0%,100%{box-shadow:0 0 14px rgba(255,255,255,.3),0 0 32px rgba(255,255,255,.1),0 4px 16px rgba(0,0,0,.3)}50%{box-shadow:0 0 24px rgba(255,255,255,.55),0 0 56px rgba(255,255,255,.2),0 4px 16px rgba(0,0,0,.3)}}
+.deck-btn:hover{transform:scale(1.04);box-shadow:0 0 28px rgba(255,255,255,.6),0 0 60px rgba(255,255,255,.22),0 4px 20px rgba(0,0,0,.3)}
+.deck-btn:active{transform:scale(.96)}
 .deck-btn-ico{font-size:16px;transition:transform .3s}
 .deck-btn:hover .deck-btn-ico{transform:translateX(4px)}
 @media(max-width:640px){.deck{height:290px;max-width:100%}.deck-btn{font-size:11px;padding:10px 22px}}
@@ -304,7 +308,7 @@ footer{padding:48px 24px 36px;border-top:.5px solid rgba(255,255,255,.07);backgr
 /* STICKY CTA — mobile only */
 #sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:89;padding:14px 18px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(0,0,0,.97) 0%,rgba(0,0,0,.7) 60%,transparent 100%);transform:translateY(120%);transition:transform .55s cubic-bezier(.19,1,.22,1);pointer-events:none}
 #sticky-cta.vis{transform:translateY(0);pointer-events:auto}
-#sticky-cta a{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:#fff;color:#000;font-size:15px;font-weight:700;padding:16px 24px;border-radius:14px;text-decoration:none;letter-spacing:-.015em}
+#sticky-cta a{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:#22c55e;color:#fff;font-size:15px;font-weight:700;padding:16px 24px;border-radius:14px;text-decoration:none;letter-spacing:-.015em;box-shadow:0 0 20px rgba(34,197,94,.5),0 0 44px rgba(34,197,94,.2);animation:greenGlow 3.5s ease-in-out infinite}
 #sticky-cta a span{font-size:18px;line-height:1}
 @media(max-width:640px){#sticky-cta{display:block}}
 
@@ -424,7 +428,7 @@ body::after{content:'';position:fixed;top:-50%;left:-50%;right:-50%;bottom:-50%;
   .vsl-wrap{margin-bottom:28px}
   .vsl-box{border-radius:12px}
   .vsl-btn{width:58px;height:58px}
-  .hero-proof{font-size:11px;padding:9px 12px;gap:8px;flex-wrap:nowrap}
+  .hero-proof{font-size:11px;padding:9px 16px;gap:8px;flex-wrap:nowrap;max-width:100%;width:calc(100% - 32px)}
   .hp-sep{margin:0 6px !important}
   .psep{display:none}
   .hero-proof span:nth-child(3){display:none}
@@ -470,7 +474,7 @@ body::after{content:'';position:fixed;top:-50%;left:-50%;right:-50%;bottom:-50%;
   .offer-card{padding:28px 18px}
   .mod-name{font-size:13px}
   .mod-key{width:28px;height:28px;font-size:11px}
-  .price-val{font-size:58px}
+  .price-val{font-size:108px}
 
   #final-cta{padding:72px 16px}
   .fcta-ttl{font-size:clamp(28px,8vw,48px)}
@@ -492,12 +496,12 @@ body::after{content:'';position:fixed;top:-50%;left:-50%;right:-50%;bottom:-50%;
   <div class="hero-glow"></div>
   <div class="hero-dots"></div>
   <div class="hero-overline"><img src="logospeed.png" alt="Método SPEED" class="hero-logo"></div>
-  <h1 class="hero-h1" aria-label="Seu criativo não é ruim. Sua leitura é.">
-    <span style="display:block"><span class="ww"><span class="wi" style="animation-delay:.26s">Seu</span></span> <span class="ww"><span class="wi" style="animation-delay:.34s">criativo</span></span></span>
-    <span style="display:block"><span class="ww"><span class="wi" style="animation-delay:.44s">não</span></span> <span class="ww"><span class="wi" style="animation-delay:.52s">é</span></span> <span class="ww"><span class="wi" style="animation-delay:.6s">ruim.</span></span></span>
-    <span style="display:block" class="hero-glow-line"><span class="ww"><span class="wi" style="animation-delay:.7s">Sua</span></span> <span class="ww"><span class="wi" style="animation-delay:.78s">leitura</span></span> <span class="ww"><span class="wi" style="animation-delay:.86s">é.</span></span></span>
+  <h1 class="hero-h1" aria-label="O Método SPEED triplica o seu ROI">
+    <span style="display:block"><span class="ww"><span class="wi" style="animation-delay:.26s">O</span></span> <span class="ww"><span class="wi" style="animation-delay:.34s">Método</span></span></span>
+    <span style="display:block"><span class="ww"><span class="wi" style="animation-delay:.44s">SPEED</span></span></span>
+    <span style="display:block" class="hero-glow-line"><span class="ww"><span class="wi" style="animation-delay:.54s">triplica</span></span> <span class="ww"><span class="wi" style="animation-delay:.62s">o</span></span> <span class="ww"><span class="wi" style="animation-delay:.70s">seu</span></span> <span class="ww"><span class="wi" style="animation-delay:.78s">ROI</span></span></span>
   </h1>
-  <p class="hero-sub">Todo criativo que parou já te disse onde falhou. Você só não tinha o método para ler.</p>
+  <p class="hero-sub">em <strong>menos de 1 hora</strong> otimize sua estrutura de anúncios com uma <strong>estratégia validada</strong></p>
   <div class="vsl-wrap">
     <div class="vsl-box">
       <script src="https://fast.wistia.com/player.js" async></script>
@@ -511,7 +515,7 @@ body::after{content:'';position:fixed;top:-50%;left:-50%;right:-50%;bottom:-50%;
     <div class="hp-sep"></div>
     <div class="hp-item"><div class="hp-val"><span class="ps" id="cnt-b">4.9</span><span class="hp-unit"> / 5</span></div><div class="hp-lbl">avaliação</div><div class="hp-bar-wrap"><div class="hp-bar" id="bar-b"></div></div></div>
     <div class="hp-sep"></div>
-    <div class="hp-item"><div class="hp-val"><span class="ps" id="cnt-c">R$ 50M+</span></div><div class="hp-lbl">criativos</div><div class="hp-bar-wrap"><div class="hp-bar" id="bar-c"></div></div></div>
+    <div class="hp-item"><div class="hp-val"><span class="ps" id="cnt-c">R$ 50M+</span></div><div class="hp-lbl">usando speed</div><div class="hp-bar-wrap"><div class="hp-bar" id="bar-c"></div></div></div>
   </div>
 </section>
 
@@ -525,11 +529,9 @@ body::after{content:'';position:fixed;top:-50%;left:-50%;right:-50%;bottom:-50%;
       <div class="cycle-step"><div class="cycle-num">03</div><div class="cycle-body"><h3>Cai — e você pausa no impulso</h3><p>Reação, não decisão. Nenhum diagnóstico. Só mais um criativo novo no lugar do anterior.</p></div></div>
       <div class="cycle-step"><div class="cycle-num">04</div><div class="cycle-body"><h3>A culpa vai pro produto, público ou algoritmo</h3><p>O ciclo recomeça. Criativo novo. Critério nenhum. A conta continua queimando.</p></div></div>
       <div class="cycle-warn">
-        <div class="cycle-warn-row">
-          <span class="cycle-warn-eq">Sem critério + impulso</span>
-          <span class="cycle-warn-res">= verba evaporando</span>
-        </div>
-        <p class="cycle-warn-sub">O diagnóstico correto quebra esse ciclo</p>
+        <span class="cycle-warn-eq">Sem critério + impulso</span>
+        <span class="cycle-warn-res">= dinheiro jogado no lixo</span>
+        <p class="cycle-warn-sub">O Método SPEED quebra esse ciclo</p>
       </div>
     </div>
   </div>
@@ -706,12 +708,14 @@ body::after{content:'';position:fixed;top:-50%;left:-50%;right:-50%;bottom:-50%;
         <div class="mod-row"><div class="mod-key">E</div><div class="mod-name">Essência — A Big Idea que diferencia no feed</div><div class="mod-tag">Módulo 3</div></div>
         <div class="mod-row"><div class="mod-key">E</div><div class="mod-name">Estrutura — Do hook ao CTA sem buracos</div><div class="mod-tag">Módulo 4</div></div>
         <div class="mod-row"><div class="mod-key">D</div><div class="mod-name">Distribuição — Ler dados e decidir em minutos</div><div class="mod-tag">Módulo 5</div></div>
-        <div class="mod-row"><div class="mod-key">&#x2605;</div><div class="mod-name">Checklist SPEED — diagnóstico em tempo real</div><div class="mod-tag b">Bônus</div></div>
+        <div class="mod-row"><div class="mod-key star">&#x2605;</div><div class="mod-name">Checklist SPEED — diagnóstico em tempo real</div><div class="mod-tag b">Bônus</div></div>
+        <div class="mod-row"><div class="mod-key star">&#x2605;</div><div class="mod-name">Guia SPEED para Criativos — SAAS, NUTRA, INFO, DROP e High Ticket</div><div class="mod-tag b">Bônus</div></div>
+        <div class="mod-row"><div class="mod-key star">&#x2605;</div><div class="mod-name">Prompt Kit IA Meta — hooks, copies, Big Ideas e variações com IA</div><div class="mod-tag b">Bônus</div></div>
       </div>
       <div class="price-blk">
         <p class="price-from">de R$ 497</p>
         <div style="display:flex;align-items:flex-start;justify-content:center;gap:4px">
-          <span class="price-val"><span class="price-pfx">R$</span> 97</span>
+          <span class="price-val"><span class="price-pfx">R$</span>97</span>
         </div>
         <p class="price-note">ou 12x de R$ 9,13 · Acesso imediato e vitalício</p>
       </div>
@@ -809,6 +813,14 @@ document.querySelectorAll('.rev').forEach(function(el){ro.observe(el)});
 
 // CYCLE LINE
 var cf=document.getElementById('cycle-fill');
+// CYCLE WARN REVEAL
+(function(){
+  var cw=document.querySelector('.cycle-warn');
+  if(!cw)return;
+  new IntersectionObserver(function(e){
+    if(e[0].isIntersecting) setTimeout(function(){cw.classList.add('in')},180);
+  },{threshold:.6}).observe(cw);
+})();
 var co=new IntersectionObserver(function(e){if(e[0].isIntersecting)cf.style.height='100%'},{threshold:.2});
 co.observe(document.getElementById('cycle-wrap'));
 
